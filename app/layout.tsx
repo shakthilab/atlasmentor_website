@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -124,6 +125,7 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
