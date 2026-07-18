@@ -1,0 +1,193 @@
+
+/* WordPress "Additional CSS" (wp-custom-css) — FAQ accordion title color on single-post pages */
+.single-post span.ekit-accordion-title {
+  color: #DE8017;
+}
+
+/* Keep animated elements hidden initially so scroll animations can trigger */
+.elementor-invisible {
+  visibility: hidden;
+}
+
+/* Ensure animation keyframes start correctly and do not flash */
+.animated {
+  animation-fill-mode: both !important;
+}
+
+/* Enforce submenu dropdown visibility on hover for desktop screens */
+@media (min-width: 1025px) {
+  /* Prevent overflow clipping in the header and all its descendant containers */
+  header.elementor-location-header,
+  header.elementor-location-header *,
+  .elementor-61,
+  .elementor-61 * {
+    overflow: visible !important;
+  }
+
+  /* Force display of submenu dropdowns on hover */
+  .elementor-nav-menu li.menu-item-has-children:hover > ul.sub-menu,
+  .elementor-nav-menu li.menu-item-has-children:focus-within > ul.sub-menu {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* Premium staggered bottom-to-up fade animations for the hero section */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-animate-slide-up {
+  opacity: 0;
+  animation: slideUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.hero-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.hero-delay-3 {
+  animation-delay: 0.5s;
+}
+
+.hero-delay-4 {
+  animation-delay: 0.7s;
+}
+
+/* GPU-accelerated transitions for Hero cross-fade */
+.hero-transitioning-out {
+  opacity: 0 !important;
+  transition: opacity 250ms ease-in-out !important;
+  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero-transitioning-in {
+  opacity: 0 !important;
+  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero-transition-done {
+  opacity: 1 !important;
+  transition: opacity 450ms ease-in-out !important;
+  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Center the Razorpay embed button */
+.elementor-shortcode form,
+.elementor-shortcode .razorpay-embed-btn {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: 15px !important;
+}
+
+/* Style the file upload field container to match other textual fields */
+.elementor-upload-field {
+  width: 100% !important;
+  font-family: Roboto, sans-serif !important;
+  font-size: 14px !important;
+  color: #727272 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #dadada !important;
+  border-radius: 3px !important;
+  padding: 4px 6px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+}
+
+/* Style the file input button inside the input element */
+.elementor-upload-field::file-selector-button {
+  border: 1px solid #cccccc !important;
+  background-color: #f3f3f3 !important;
+  padding: 4px 10px !important;
+  border-radius: 2px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  color: #333333 !important;
+  margin-right: 10px !important;
+}
+
+.elementor-upload-field::file-selector-button:hover {
+  background-color: #e5e5e5 !important;
+}
+
+/* ===== MBBS Atlas Country Cards — exact match to live atlasmentor.com =====
+   Scoped to the two card-row sections specifically (7b7e1047 = Russia/Uzbekistan/Georgia,
+   6e667e18 = Kyrgyzstan/Kazakhstan/Moldova/Vietnam), NOT to every ".elementor-inner-section"
+   under #mbbs-atlas — that blanket selector was also matching the intro paragraph's section
+   (69252a25), squeezing its width with 30px side padding + justify and forcing an extra
+   line wrap that grew the whole section ~78px taller than live. */
+
+/* 1. Stretch all columns in each row to equal height */
+#mbbs-atlas .elementor-element-7b7e1047 > .elementor-container,
+#mbbs-atlas .elementor-element-6e667e18 > .elementor-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+}
+
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-column,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-column {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 2. Make .elementor-element-populated a flex column so button pushes to bottom.
+   Uniform 30px bottom padding on all cards (live site varies: 30px/20px/0px — we normalise) */
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-element-populated,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-element-populated {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  padding-bottom: 30px !important;
+  margin: 10px !important;
+}
+
+/* 3. Heading: NO override — let the original paddings (e.g. 70px on some cards) apply to match live site wrapping */
+
+
+/* 4. Image: NO override — Elementor defaults apply:
+      .elementor-widget-image { text-align: center }
+      .elementor-widget-image img { display: inline-block }
+   This centres the 430px image in the card, creating natural white side gaps. */
+
+/* 5. Description: live site values — 0 top, 30px sides/bottom, text justified */
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-widget-text-editor > .elementor-widget-container,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-widget-text-editor > .elementor-widget-container {
+  padding: 0px 30px 30px 30px !important;
+}
+
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-widget-text-editor,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-widget-text-editor {
+  text-align: justify !important;
+}
+
+/* 6. Button: live site value — 30px left padding; margin-top:auto aligns buttons at same level */
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-widget-button,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-widget-button {
+  margin-top: auto !important;
+}
+
+#mbbs-atlas .elementor-element-7b7e1047 .elementor-widget-button > .elementor-widget-container,
+#mbbs-atlas .elementor-element-6e667e18 .elementor-widget-button > .elementor-widget-container {
+  padding: 0px 0px 0px 30px !important;
+}
+
+
+
