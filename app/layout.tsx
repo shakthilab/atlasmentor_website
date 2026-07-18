@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import fs from 'fs';
 import path from 'path';
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -122,6 +123,7 @@ export default function RootLayout({
           src="/wp-content/plugins/elementor/assets/lib/swiper/v8/swiper.min.js"
           strategy="lazyOnload"
         />
+        <Analytics />
       </body>
     </html>
   );
