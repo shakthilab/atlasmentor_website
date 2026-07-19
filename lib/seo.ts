@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://atlasmentor.com";
-const SITE_NAME = "Atlas Mentor";
-const DEFAULT_OG_IMAGE = "/wp-content/uploads/2024/07/MBBS-Dream-With-Atlas-Mentor.jpg";
+export const SITE_NAME = "Atlas Mentor";
+export const DEFAULT_OG_IMAGE = "/wp-content/uploads/2024/07/MBBS-Dream-With-Atlas-Mentor.jpg";
 
 interface ScrapedPageData {
   title?: string;

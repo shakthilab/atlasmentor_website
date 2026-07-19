@@ -12,11 +12,9 @@ import BodyClassManager from "@/components/BodyClassManager";
 import FormHandlerClient from "@/components/FormHandlerClient";
 import ElementorInteractions from "@/components/ElementorInteractions";
 import HeroTransition from "@/components/HeroTransition";
-import { organizationSchema } from "@/lib/seo";
+import { organizationSchema, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
-const SITE_URL = "https://atlasmentor.com";
 const SITE_DESCRIPTION = "Guiding students through their MBBS study abroad journey";
-const DEFAULT_OG_IMAGE = "/wp-content/uploads/2024/07/MBBS-Dream-With-Atlas-Mentor.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -24,7 +22,7 @@ export const metadata: Metadata = {
   // (data/pages/*.json) already ends in "– Atlas Mentor", so a template suffix
   // here previously doubled up on every non-homepage page
   // (e.g. "...Kazakhstan – Atlas Mentor | Atlas Mentor").
-  title: "Atlas Mentor",
+  title: SITE_NAME,
   description: SITE_DESCRIPTION,
   icons: {
     icon: [
@@ -36,16 +34,16 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Atlas Mentor",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "Atlas Mentor",
+    siteName: SITE_NAME,
     type: "website",
     images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Atlas Mentor",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
