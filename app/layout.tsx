@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,46 +12,7 @@ import BodyClassManager from "@/components/BodyClassManager";
 import FormHandlerClient from "@/components/FormHandlerClient";
 import ElementorInteractions from "@/components/ElementorInteractions";
 import HeroTransition from "@/components/HeroTransition";
-
-
-const GLOBAL_STYLES = [
-  "/wp-content/plugins/metronet-profile-picture/dist/blocks.style.build.css",
-  "/wp-content/plugins/menu-image/includes/css/menu-image.css",
-  "/wp-includes/css/dashicons.min.css",
-  "/wp-content/themes/hello-elementor/style.min.css",
-  "/wp-content/themes/hello-elementor/theme.min.css",
-  "/wp-content/plugins/elementor/assets/css/frontend.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-social-icons.min.css",
-  "/wp-content/plugins/elementor/assets/css/conditionals/apple-webkit.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-image.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/widget-nav-menu.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-heading.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/widget-form.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/conditionals/popup.min.css",
-  "/wp-content/uploads/elementor/css/post-9.css",
-  "/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInUp.min.css",
-  "/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInLeft.min.css",
-  "/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInRight.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-divider.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-video.min.css",
-  "/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/widget-blockquote.min.css",
-  "/wp-content/plugins/elementor/assets/lib/animations/styles/e-animation-float.min.css",
-  "/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css",
-  "/wp-content/plugins/elementor/assets/css/conditionals/e-swiper.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/widget-testimonial-carousel.min.css",
-  "/wp-content/plugins/pro-elements/assets/css/widget-carousel-module-base.min.css",
-  "/wp-content/uploads/elementor/css/post-61.css",
-  "/wp-content/uploads/elementor/css/post-64.css",
-  "/wp-content/uploads/elementor/css/post-664.css",
-  "/wp-content/plugins/elementskit-lite/widgets/init/assets/css/widget-styles.css",
-  "/wp-content/plugins/elementskit-lite/widgets/init/assets/css/responsive.css",
-  "/wp-content/uploads/elementor/google-fonts/css/montserrat.css",
-  "/wp-content/uploads/elementor/google-fonts/css/raleway.css",
-  "/wp-content/uploads/elementor/google-fonts/css/roboto.css",
-  "/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css"
-];
+import { organizationSchema } from "@/lib/seo";
 
 const SITE_URL = "https://atlasmentor.com";
 const SITE_DESCRIPTION = "Guiding students through their MBBS study abroad journey";
@@ -58,10 +20,11 @@ const DEFAULT_OG_IMAGE = "/wp-content/uploads/2024/07/MBBS-Dream-With-Atlas-Ment
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Atlas Mentor",
-    template: "%s | Atlas Mentor",
-  },
+  // Plain string, not a { default, template } object: every page's own title
+  // (data/pages/*.json) already ends in "– Atlas Mentor", so a template suffix
+  // here previously doubled up on every non-homepage page
+  // (e.g. "...Kazakhstan – Atlas Mentor | Atlas Mentor").
+  title: "Atlas Mentor",
   description: SITE_DESCRIPTION,
   icons: {
     icon: [
@@ -101,9 +64,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {GLOBAL_STYLES.map((href) => (
-          <link rel="stylesheet" href={href} key={href} precedence="default" />
-        ))}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: organizationSchema() }}
+        />
+        {/* Bundles the ~36 legacy WordPress/Elementor stylesheets (still listed as
+            GLOBAL_STYLES in app/page.tsx, app/[slug]/page.tsx, etc. for the per-page
+            de-dupe filter) into one request. Regenerate with scripts/combine_global_css.py
+            if that list ever changes. */}
+        <link rel="stylesheet" href="/wp-content/combined-global.css" precedence="default" />
       </head>
       <body suppressHydrationWarning>
         <BodyClassManager />
@@ -124,6 +93,7 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

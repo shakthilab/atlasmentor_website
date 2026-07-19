@@ -2,7 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { buildPageMetadata } from '@/lib/seo';
+import {
+  buildPageMetadata,
+  SITE_URL,
+  COUNTRY_NAMES,
+  COUNTRY_SLUGS,
+  parseUniversityTitle,
+  collegeSchema,
+  type BreadcrumbItem,
+} from '@/lib/seo';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import RichHtml from '@/components/RichHtml';
 
 const GLOBAL_STYLES = [
   "/wp-content/plugins/metronet-profile-picture/dist/blocks.style.build.css",
@@ -105,8 +115,51 @@ export default async function Page({ params }: PageProps) {
     .replace(/https:\/\/atlasmentor\.com\/wp-content\//g, '/wp-content/')
     .replace(/https:\/\/atlasmentor\.com\/wp-includes\//g, '/wp-includes/');
 
+  const canonical = data.canonical || `${SITE_URL}/${slug}/`;
+  const university = parseUniversityTitle(data.title || '');
+
+  const breadcrumbItems: BreadcrumbItem[] = (() => {
+    const home: BreadcrumbItem = { name: 'Home', url: `${SITE_URL}/` };
+
+    if (slug === 'contact-us') {
+      return [home, { name: 'Contact Us', url: canonical }];
+    }
+
+    if (slug === 'mbbs-abroad') {
+      return [home, { name: 'MBBS Abroad', url: canonical }];
+    }
+
+    const studyMatch = slug.match(/^study-mbbs-in-(.+)-for-indian-students$/);
+    const studyCountry = studyMatch ? COUNTRY_NAMES[studyMatch[1]] : undefined;
+    if (studyCountry) {
+      return [
+        home,
+        { name: 'MBBS Abroad', url: `${SITE_URL}/mbbs-abroad/` },
+        { name: `MBBS in ${studyCountry}`, url: canonical },
+      ];
+    }
+
+    if (university) {
+      const countrySlug = COUNTRY_SLUGS[university.country];
+      return [
+        home,
+        { name: 'MBBS Abroad', url: `${SITE_URL}/mbbs-abroad/` },
+        { name: `MBBS Universities in ${university.country}`, url: `${SITE_URL}/mbbs-university/${countrySlug}/` },
+        { name: university.name, url: canonical },
+      ];
+    }
+
+    return [home];
+  })();
+
+  const universitySchema = university
+    ? collegeSchema({ name: university.name, country: university.country, url: canonical, description: data.description })
+    : null;
+
   return (
     <main>
+      <Breadcrumbs items={breadcrumbItems} />
+
       {/* Page specific stylesheets hoisted to head with precedence for React resource management */}
       {pageStyles.map((href: string) => (
         <link rel="stylesheet" href={href} key={href} precedence="default" />
@@ -120,9 +173,12 @@ export default async function Page({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: schemaStr }}
         />
       ))}
+      {universitySchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: universitySchema }} />
+      )}
 
       {/* Page Content */}
-      <div dangerouslySetInnerHTML={{ __html: processedBody }} suppressHydrationWarning />
+      <RichHtml html={processedBody} />
     </main>
   );
 }

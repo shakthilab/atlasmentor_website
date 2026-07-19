@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { buildPageMetadata } from '@/lib/seo';
+import { buildPageMetadata, SITE_URL, COUNTRY_NAMES, type BreadcrumbItem } from '@/lib/seo';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import RichHtml from '@/components/RichHtml';
 
 const GLOBAL_STYLES = [
   "/wp-content/plugins/metronet-profile-picture/dist/blocks.style.build.css",
@@ -105,8 +107,18 @@ export default async function CountryPage({ params }: CountryProps) {
     .replace(/https:\/\/atlasmentor\.com\/wp-content\//g, '/wp-content/')
     .replace(/https:\/\/atlasmentor\.com\/wp-includes\//g, '/wp-includes/');
 
+  const canonical = data.canonical || `${SITE_URL}/mbbs-university/${country}/`;
+  const countryName = COUNTRY_NAMES[country] || country;
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'MBBS Abroad', url: `${SITE_URL}/mbbs-abroad/` },
+    { name: `MBBS Universities in ${countryName}`, url: canonical },
+  ];
+
   return (
     <main>
+      <Breadcrumbs items={breadcrumbItems} />
+
       {/* Page specific stylesheets hoisted to head with precedence for React resource management */}
       {pageStyles.map((href: string) => (
         <link rel="stylesheet" href={href} key={href} precedence="default" />
@@ -122,7 +134,7 @@ export default async function CountryPage({ params }: CountryProps) {
       ))}
 
       {/* Page Content */}
-      <div dangerouslySetInnerHTML={{ __html: processedBody }} suppressHydrationWarning />
+      <RichHtml html={processedBody} />
     </main>
   );
 }

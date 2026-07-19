@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { Metadata } from 'next';
-import { buildPageMetadata } from '@/lib/seo';
+import { buildPageMetadata, extractAccordionFAQs, faqPageSchema } from '@/lib/seo';
+import RichHtml from '@/components/RichHtml';
 
 const GLOBAL_STYLES = [
   "/wp-content/plugins/metronet-profile-picture/dist/blocks.style.build.css",
@@ -80,6 +81,8 @@ export default function Home() {
     .replace(/https:\/\/atlasmentor\.com\/wp-content\//g, '/wp-content/')
     .replace(/https:\/\/atlasmentor\.com\/wp-includes\//g, '/wp-includes/');
 
+  const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
+
   return (
     <main>
       {/* Page specific stylesheets hoisted to head with precedence for React resource management */}
@@ -95,9 +98,12 @@ export default function Home() {
           dangerouslySetInnerHTML={{ __html: schemaStr }}
         />
       ))}
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      )}
 
       {/* Page Content */}
-      <div dangerouslySetInnerHTML={{ __html: processedBody }} suppressHydrationWarning />
+      <RichHtml html={processedBody} />
     </main>
   );
 }

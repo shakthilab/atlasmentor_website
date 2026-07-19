@@ -11,6 +11,47 @@ export default function Popup({ html }: PopupProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  // Lock background scrolling when the popup is open
+  useEffect(() => {
+    if (isOpen) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsOpen(false);
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isOpen]);
+
+  // Close popup after successful form submission
+  useEffect(() => {
+    const handleFormSuccess = () => {
+      if (isOpen) {
+        setTimeout(() => {
+          setIsOpen(false);
+        }, 1500);
+      }
+    };
+
+    window.addEventListener('elementor-form-success', handleFormSuccess);
+    return () => {
+      window.removeEventListener('elementor-form-success', handleFormSuccess);
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     if (pathname !== '/') return;
 
@@ -74,6 +115,11 @@ export default function Popup({ html }: PopupProps) {
     <div
       className="dialog-widget dialog-lightbox-widget dialog-type-buttons dialog-type-lightbox elementor-popup-modal"
       id="elementor-popup-modal-664"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          setIsOpen(false);
+        }
+      }}
       style={{
         display: 'flex',
         position: 'fixed',
@@ -84,7 +130,9 @@ export default function Popup({ html }: PopupProps) {
         zIndex: 99999,
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.65)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
       }}
     >
       <style dangerouslySetInnerHTML={{

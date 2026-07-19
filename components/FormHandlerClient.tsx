@@ -66,6 +66,8 @@ export default function FormHandlerClient() {
           messageContainer.innerText = 'Your submission was successful. Thank you!';
           messageContainer.style.display = 'block';
           form.reset();
+
+          window.dispatchEvent(new CustomEvent('elementor-form-success', { detail: { form } }));
         } else {
           // Failure state
           messageContainer.classList.add('elementor-message-danger');

@@ -135,6 +135,13 @@ export default function HeroTransition({ children }: { children: React.ReactNode
 
       // Intercept local links only (starts with '/', not external, not mailto/tel/whatsapp/etc., and not hash anchors)
       if (href.startsWith('/') && !href.startsWith('/#') && !href.includes(':')) {
+        // Extract destination pathname to see if we are navigating to the same page
+        const destPathname = href.split('?')[0].split('#')[0];
+        if (destPathname === pathname) {
+          // Allow default behavior (e.g. scroll to anchor/top) without page transition overlay
+          return;
+        }
+
         e.preventDefault();
 
         // Remove focus from the clicked link so that CSS :focus-within dropdowns close immediately
@@ -209,7 +216,7 @@ export default function HeroTransition({ children }: { children: React.ReactNode
     return () => {
       document.removeEventListener('click', handleLinkClick);
     };
-  }, [router]);
+  }, [router, pathname]);
 
   // Before client mount, render children without the wrapper so SSR and
   // the initial client render produce identical HTML.

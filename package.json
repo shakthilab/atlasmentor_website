@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--max-old-space-size=2048' next dev",
     "dev:network": "NODE_OPTIONS='--max-old-space-size=2048' next dev -H 0.0.0.0",
+    "prebuild": "node scripts/build_image_dimensions.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -12,6 +13,9 @@
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "dom-serializer": "^3.1.1",
+    "html-react-parser": "^6.1.5",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"

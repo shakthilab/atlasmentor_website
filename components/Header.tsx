@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import HeaderClient from './HeaderClient';
+import RichHtml from './RichHtml';
 
 export default function Header() {
   const headerHtmlPath = path.join(process.cwd(), 'data/globals/header.html');
@@ -19,12 +20,15 @@ export default function Header() {
             overflow: visible !important;
           }
 
-          /* Force display of submenu dropdowns on hover */
+          /* Force display and prevent clipping of submenu dropdowns on hover */
           .elementor-nav-menu li.menu-item-has-children:hover > ul.sub-menu,
           .elementor-nav-menu li.menu-item-has-children:focus-within > ul.sub-menu {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
           }
         }
 
@@ -119,7 +123,7 @@ export default function Header() {
           text-decoration: none !important;
         }
       `}} />
-      <div dangerouslySetInnerHTML={{ __html: headerHtml }} suppressHydrationWarning />
+      <RichHtml html={headerHtml} />
       <HeaderClient />
     </>
   );
