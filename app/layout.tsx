@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Popup from "@/components/Popup";
 import BodyClassManager from "@/components/BodyClassManager";
+import ClarityAnalytics from "@/components/ClarityAnalytics";
 import FormHandlerClient from "@/components/FormHandlerClient";
 import ElementorInteractions from "@/components/ElementorInteractions";
 import HeroTransition from "@/components/HeroTransition";
@@ -93,6 +94,7 @@ export default function RootLayout({
         />
         <Analytics />
         <SpeedInsights />
+        <ClarityAnalytics />
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

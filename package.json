@@ -12,6 +12,7 @@
     "clean": "rm -rf .next out"
   },
   "dependencies": {
+    "@microsoft/clarity": "^1.0.2",
     "@next/third-parties": "^16.2.10",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
