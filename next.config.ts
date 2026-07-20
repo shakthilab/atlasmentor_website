@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Old WordPress static front page — content now lives at the homepage.
+      { source: "/atlas-mentor", destination: "/", permanent: true },
       // Old WordPress placeholder/event pages with no new-site equivalent.
       { source: "/sample-page", destination: "/", permanent: true },
       { source: "/seminar", destination: "/", permanent: true },
