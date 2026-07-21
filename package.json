@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "eslint",
     "clean": "rm -rf .next out",
-    "indexnow:submit": "node scripts/submit-indexnow.mjs"
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
+    "indexnow:notify-changed": "node scripts/indexnow-notify-changed.mjs"
   },
   "dependencies": {
     "@microsoft/clarity": "^1.0.2",
