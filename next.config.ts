@@ -26,6 +26,14 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
+      {
+        // Content-hashed filename (scripts/combine_global_css.py) — safe to
+        // cache forever since a content change always ships under a new hash.
+        source: "/wp-content/combined-global-:hash([a-f0-9]+).css",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
     ];
   },
 };
