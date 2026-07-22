@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import fs from 'fs';
 import path from 'path';
 import Script from "next/script";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -72,9 +72,6 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      {process.env.NEXT_PUBLIC_GTM_ID && (
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-      )}
       <head>
         <script
           type="application/ld+json"
@@ -85,8 +82,31 @@ export default function RootLayout({
             de-dupe filter) into one content-hashed, immutably-cached request.
             Regenerate with scripts/combine_global_css.py if that list ever changes. */}
         <link rel="stylesheet" href={getCombinedGlobalCssHref()} precedence="default" />
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <Script
+            id="gtm-script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');`,
+            }}
+          />
+        )}
       </head>
       <body suppressHydrationWarning>
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <BodyClassManager />
         <ElementorInteractions />
         <FormHandlerClient />
