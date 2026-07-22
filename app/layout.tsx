@@ -95,10 +95,14 @@ export default function RootLayout({
             }}
           />
         )}
-        <Script
+        {/* Plain <script> (not next/script) so it's a literal tag in the
+            server-rendered HTML — Ahrefs' installation checker does a static
+            HTML fetch and won't see a script that next/script injects via JS
+            after hydration. */}
+        <script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="HSmh3OQcYphlysG9HOx2Zg"
-          strategy="afterInteractive"
+          async
         />
       </head>
       <body suppressHydrationWarning>
