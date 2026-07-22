@@ -95,6 +95,11 @@ export default function RootLayout({
             }}
           />
         )}
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="HSmh3OQcYphlysG9HOx2Zg"
+          strategy="afterInteractive"
+        />
       </head>
       <body suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GTM_ID && (
