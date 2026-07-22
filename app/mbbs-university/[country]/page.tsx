@@ -42,7 +42,16 @@ const GLOBAL_STYLES = [
   "/wp-content/uploads/elementor/google-fonts/css/montserrat.css",
   "/wp-content/uploads/elementor/google-fonts/css/raleway.css",
   "/wp-content/uploads/elementor/google-fonts/css/roboto.css",
-  "/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css"
+  "/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css",
+  "/wp-content/plugins/elementor/assets/css/widget-image-box.min.css",
+  "/wp-content/plugins/pro-elements/assets/css/widget-post-info.min.css",
+  "/wp-content/plugins/pro-elements/assets/css/widget-share-buttons.min.css",
+  "/wp-content/plugins/pro-elements/assets/css/widget-author-box.min.css",
+  "/wp-content/plugins/pro-elements/assets/css/widget-posts.min.css",
+  "/wp-content/plugins/pro-elements/assets/css/modules/sticky.min.css",
+  "/wp-content/uploads/elementor/css/post-370.css",
+  "/wp-content/uploads/elementor/css/post-1585.css",
+  "/wp-content/uploads/elementor/google-fonts/css/opensans.css"
 ];
 
 function getCountryData(country: string | undefined) {

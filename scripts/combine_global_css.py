@@ -1,3 +1,5 @@
+import glob
+import hashlib
 import os
 import re
 import posixpath
@@ -42,6 +44,18 @@ GLOBAL_STYLES = [
     "/wp-content/uploads/elementor/google-fonts/css/raleway.css",
     "/wp-content/uploads/elementor/google-fonts/css/roboto.css",
     "/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css",
+    # Below: shared by nearly every university/study-guide page (per-page
+    # widget styles + reused Elementor template partials) but previously
+    # loaded as separate render-blocking requests on those templates.
+    "/wp-content/plugins/elementor/assets/css/widget-image-box.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-post-info.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-share-buttons.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-author-box.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-posts.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/modules/sticky.min.css",
+    "/wp-content/uploads/elementor/css/post-370.css",
+    "/wp-content/uploads/elementor/css/post-1585.css",
+    "/wp-content/uploads/elementor/google-fonts/css/opensans.css",
 ]
 
 URL_RE = re.compile(r"url\(\s*(['\"]?)([^'\")]+)\1\s*\)")
@@ -70,7 +84,19 @@ for href in GLOBAL_STYLES:
     chunks.append(f"/* --- {href} --- */\n{rewritten.strip()}\n")
 
 combined = "\n".join(chunks)
-out_path = os.path.join(PUBLIC, "wp-content", "combined-global.css")
+
+# Content-hashed filename so it can be served with a 1-year immutable
+# Cache-Control header (see the matching next.config.ts headers() rule) —
+# any content change produces a new filename instead of invalidating a
+# cached one.
+content_hash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:10]
+out_dir = os.path.join(PUBLIC, "wp-content")
+out_path = os.path.join(out_dir, f"combined-global-{content_hash}.css")
+
+for stale in glob.glob(os.path.join(out_dir, "combined-global-*.css")):
+    if stale != out_path:
+        os.remove(stale)
+
 with open(out_path, "w", encoding="utf-8") as f:
     f.write(combined)
 

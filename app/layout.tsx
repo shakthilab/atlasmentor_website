@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import fs from 'fs';
 import path from 'path';
 import Script from "next/script";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -17,6 +17,15 @@ import HeroTransition from "@/components/HeroTransition";
 import { organizationSchema, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const SITE_DESCRIPTION = "Guiding students through their MBBS study abroad journey";
+
+// The bundle's filename is content-hashed (see scripts/combine_global_css.py)
+// so it can carry a 1-year immutable Cache-Control header (next.config.ts) —
+// look up the current hash instead of hardcoding it.
+function getCombinedGlobalCssHref(): string {
+  const dir = path.join(process.cwd(), "public/wp-content");
+  const [file] = fs.readdirSync(dir).filter((name) => /^combined-global-[a-f0-9]+\.css$/.test(name));
+  return `/wp-content/${file}`;
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -63,16 +72,19 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      {process.env.NEXT_PUBLIC_GTM_ID && (
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+      )}
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: organizationSchema() }}
         />
-        {/* Bundles the ~36 legacy WordPress/Elementor stylesheets (still listed as
+        {/* Bundles the ~45 legacy WordPress/Elementor stylesheets (still listed as
             GLOBAL_STYLES in app/page.tsx, app/[slug]/page.tsx, etc. for the per-page
-            de-dupe filter) into one request. Regenerate with scripts/combine_global_css.py
-            if that list ever changes. */}
-        <link rel="stylesheet" href="/wp-content/combined-global.css" precedence="default" />
+            de-dupe filter) into one content-hashed, immutably-cached request.
+            Regenerate with scripts/combine_global_css.py if that list ever changes. */}
+        <link rel="stylesheet" href={getCombinedGlobalCssHref()} precedence="default" />
       </head>
       <body suppressHydrationWarning>
         <BodyClassManager />
