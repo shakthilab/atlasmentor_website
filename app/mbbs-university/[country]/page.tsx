@@ -2,7 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { buildPageMetadata, SITE_URL, COUNTRY_NAMES, type BreadcrumbItem } from '@/lib/seo';
+import {
+  buildPageMetadata,
+  SITE_URL,
+  COUNTRY_NAMES,
+  extractAccordionFAQs,
+  faqPageSchema,
+  breadcrumbSchema,
+  type BreadcrumbItem,
+} from '@/lib/seo';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RichHtml from '@/components/RichHtml';
 
@@ -124,6 +132,8 @@ export default async function CountryPage({ params }: CountryProps) {
     { name: `MBBS Universities in ${countryName}`, url: canonical },
   ];
 
+  const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
+
   return (
     <main>
       <Breadcrumbs items={breadcrumbItems} />
@@ -141,6 +151,15 @@ export default async function CountryPage({ params }: CountryProps) {
           dangerouslySetInnerHTML={{ __html: schemaStr }}
         />
       ))}
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      )}
+      {breadcrumbItems && breadcrumbItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: breadcrumbSchema(breadcrumbItems) }}
+        />
+      )}
 
       {/* Page Content */}
       <RichHtml html={processedBody} />

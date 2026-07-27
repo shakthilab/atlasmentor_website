@@ -1,7 +1,44 @@
 
-/* WordPress "Additional CSS" (wp-custom-css) — FAQ accordion title color on single-post pages */
-.single-post span.ekit-accordion-title {
-  color: #DE8017;
+/* WordPress "Additional CSS" (wp-custom-css) — FAQ accordion title color and card layout */
+.single-post span.ekit-accordion-title,
+span.ekit-accordion-title,
+.ekit-accordion-title,
+.elementskit-accordion .elementskit-card-header .ekit-accordion-title,
+.elementskit-accordion .elementskit-card-header a.elementskit-btn-link {
+  color: #DE8017 !important;
+  font-weight: 700 !important;
+}
+
+.elementskit-accordion .elementskit-card {
+  border: 1px solid #c5d0e6 !important;
+  margin-bottom: 12px !important;
+  border-radius: 2px !important;
+  background-color: #ffffff !important;
+}
+
+.elementskit-accordion .elementskit-card.active {
+  border: 1px solid #667cb0 !important;
+}
+
+/* ElementsKit Accordion Panel Collapse & Expansion rules */
+.elementskit-accordion .collapse:not(.show),
+.elementskit-accordion .elementskit-card:not(.active) .collapse,
+.elementskit-accordion .elementskit-card:not(.active) .ekit-accordion-panel {
+  display: none !important;
+}
+
+.elementskit-accordion .elementskit-card.active .collapse,
+.elementskit-accordion .elementskit-card.active .ekit-accordion-panel,
+.elementskit-accordion .collapse.show {
+  display: block !important;
+}
+
+/* FAQ Alignment and Spacing for Detail Pages */
+.elementor-widget-heading:has(+ .elementor-widget-elementskit-accordion) .elementor-heading-title,
+.elementor-widget-heading:has(+ .elementor-widget-text-editor + .elementor-widget-elementskit-accordion) .elementor-heading-title,
+.e-con-inner > h2.elementor-heading-title,
+.elementor-element:has(.elementskit-accordion) > .elementor-widget-container > h2 {
+  text-align: left !important;
 }
 
 /* Keep animated elements hidden initially so scroll animations can trigger */

@@ -1,3 +1,5 @@
+"use client";
+
 import parse, { Element, attributesToProps, type HTMLReactParserOptions } from "html-react-parser";
 import serializeDom from "dom-serializer";
 import React from "react";
@@ -42,6 +44,48 @@ function hasDirectScriptChild(node: Element): boolean {
 // (classes, structure, forms, widgets) passes through unchanged.
 export default function RichHtml({ html }: { html: string }) {
   let imgIndex = 0;
+
+  React.useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const toggler = target.closest(".ekit-accordion--toggler") || target.closest(".elementskit-card-header");
+      if (!toggler) return;
+
+      e.preventDefault();
+      const card = toggler.closest(".elementskit-card");
+      if (!card) return;
+
+      const accordion = card.closest(".elementskit-accordion");
+      const isActive = card.classList.contains("active");
+
+      if (accordion) {
+        accordion.querySelectorAll(".elementskit-card").forEach((c) => {
+          c.classList.remove("active");
+          const panel = c.querySelector(".collapse");
+          if (panel) panel.classList.remove("show");
+          const link = c.querySelector(".ekit-accordion--toggler");
+          if (link) {
+            link.classList.add("collapsed");
+            link.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      if (!isActive) {
+        card.classList.add("active");
+        const panel = card.querySelector(".collapse");
+        if (panel) panel.classList.add("show");
+        const link = card.querySelector(".ekit-accordion--toggler");
+        if (link) {
+          link.classList.remove("collapsed");
+          link.setAttribute("aria-expanded", "true");
+        }
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {

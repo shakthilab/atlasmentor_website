@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const slug = file.replace('.json', '');
     const data = readPageData(path.join(pagesDir, file));
     if (isIndexable(data)) {
-      entries.push({ url: data?.canonical || `${SITE_URL}/${slug}`, changeFrequency: 'monthly', priority: 0.8 });
+      entries.push({ url: data?.canonical || `${SITE_URL}/${slug}/`, changeFrequency: 'monthly', priority: 0.8 });
     }
   }
 
@@ -42,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       const country = file.replace('.json', '');
       const data = readPageData(path.join(countryDir, file));
       if (isIndexable(data)) {
-        entries.push({ url: data?.canonical || `${SITE_URL}/mbbs-university/${country}`, changeFrequency: 'monthly', priority: 0.8 });
+        entries.push({ url: data?.canonical || `${SITE_URL}/mbbs-university/${country}/`, changeFrequency: 'monthly', priority: 0.8 });
       }
     }
   }

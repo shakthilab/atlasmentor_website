@@ -9,6 +9,9 @@ import {
   COUNTRY_SLUGS,
   parseUniversityTitle,
   collegeSchema,
+  extractAccordionFAQs,
+  faqPageSchema,
+  breadcrumbSchema,
   type BreadcrumbItem,
 } from '@/lib/seo';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -164,9 +167,10 @@ export default async function Page({ params }: PageProps) {
   const universitySchema = university
     ? collegeSchema({ name: university.name, country: university.country, url: canonical, description: data.description })
     : null;
+  const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
 
   return (
-    <main>
+    <main className="single-post">
       <Breadcrumbs items={breadcrumbItems} />
 
       {/* Page specific stylesheets hoisted to head with precedence for React resource management */}
@@ -184,6 +188,15 @@ export default async function Page({ params }: PageProps) {
       ))}
       {universitySchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: universitySchema }} />
+      )}
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      )}
+      {breadcrumbItems && breadcrumbItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: breadcrumbSchema(breadcrumbItems) }}
+        />
       )}
 
       {/* Page Content */}

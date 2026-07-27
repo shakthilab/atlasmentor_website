@@ -27,7 +27,7 @@ function parseRobots(robots: string | undefined): Metadata["robots"] {
 export function buildPageMetadata(data: ScrapedPageData | null, pathname: string): Metadata {
   if (!data) return {};
 
-  const canonical = data.canonical || `${SITE_URL}${pathname}`;
+  const canonical = data.canonical || `${SITE_URL}${pathname.endsWith("/") ? pathname : pathname + "/"}`;
   const description = data.description || undefined;
 
   return {
