@@ -14,7 +14,7 @@ import ClarityAnalytics from "@/components/ClarityAnalytics";
 import FormHandlerClient from "@/components/FormHandlerClient";
 import ElementorInteractions from "@/components/ElementorInteractions";
 import HeroTransition from "@/components/HeroTransition";
-import { organizationSchema, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { organizationSchema, localBusinessSchema, personSchema, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const SITE_DESCRIPTION = "Guiding students through their MBBS study abroad journey";
 
@@ -76,6 +76,14 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: organizationSchema() }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: localBusinessSchema() }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: personSchema() }}
         />
         {/* Bundles the ~45 legacy WordPress/Elementor stylesheets (still listed as
             GLOBAL_STYLES in app/page.tsx, app/[slug]/page.tsx, etc. for the per-page

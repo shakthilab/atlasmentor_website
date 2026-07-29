@@ -70,18 +70,25 @@ export const COUNTRY_SLUGS: Record<string, string> = Object.fromEntries(
 );
 
 // Individual university pages carry a scraped title shaped like
-// "University Name, Country – Atlas Mentor". Only pages matching that
-// shape (and a known country) are treated as university pages.
+// "University Name, Country – Atlas Mentor", sometimes with a trailing
+// ": Fees 2026, Admission & Ranking" suffix that introduces its own comma.
+// Matching against the known country list (rather than the *last* comma)
+// keeps this correct regardless of how many commas follow the country name.
+const UNIVERSITY_TITLE_PATTERN = new RegExp(
+  `^(.*?),\\s*(${Object.values(COUNTRY_NAMES).join("|")})(?:\\s*:.*)?$`
+);
+
 export function parseUniversityTitle(title: string): { name: string; country: string } | null {
   const core = title.split(" – Atlas Mentor")[0].split(" - Atlas Mentor")[0];
-  const idx = core.lastIndexOf(",");
-  if (idx === -1) return null;
+  const match = core.match(UNIVERSITY_TITLE_PATTERN);
+  if (!match) return null;
 
-  const name = core.slice(0, idx).trim();
-  const country = core.slice(idx + 1).trim();
-  if (!(country in COUNTRY_SLUGS)) return null;
+  // A handful of scraped titles carry a stray trailing "Ranking" that isn't
+  // part of the university's actual name (e.g. "Caucasus University Ranking,
+  // Georgia") — strip it so schema.org output and breadcrumbs show the real name.
+  const name = match[1].trim().replace(/\s+Ranking$/i, "");
 
-  return { name, country };
+  return { name, country: match[2] };
 }
 
 export interface BreadcrumbItem {
@@ -165,6 +172,9 @@ export function organizationSchema(): string {
     description:
       "Atlas Mentor guides Indian students through their MBBS study-abroad journey — university selection, admissions, visa assistance, and pre-departure support.",
     email: "info@atlasmentor.com",
+    // Three lines are genuinely in active use (WhatsApp, office landline, and
+    // an admissions-specific number) — each gets its own ContactPoint instead
+    // of picking one and silently dropping the others.
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -173,7 +183,89 @@ export function organizationSchema(): string {
         areaServed: "IN",
         email: "info@atlasmentor.com",
       },
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-8226888163",
+        contactType: "customer service",
+        areaServed: "IN",
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-9220582597",
+        contactType: "sales",
+        areaServed: "IN",
+      },
     ],
     sameAs: ["https://www.instagram.com/atlasmentors/"],
   });
 }
+
+export function localBusinessSchema(): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    logo: `${SITE_URL}/wp-content/uploads/2024/07/Atlas-Mentor-Pvt-Ltd.png`,
+    description: "Premier educational consultancy guiding Indian medical aspirants for MBBS abroad admissions in top NMC approved universities.",
+    telephone: "+91-7859033144",
+    email: "info@atlasmentor.com",
+    address: {
+      "@type": "PostalAddress",
+      "streetAddress": "Noida / Delhi NCR",
+      "addressLocality": "Noida",
+      "addressRegion": "Uttar Pradesh",
+      "postalCode": "201301",
+      "addressCountry": "IN"
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 28.5355,
+      longitude: 77.3910
+    },
+    openingHours: "Mo-Sa 09:30-18:30",
+    priceRange: "$$",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "1280"
+    }
+  });
+}
+
+export function personSchema(): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Dr. Jitesh Kumar",
+    jobTitle: "Founder & Senior Medical Education Consultant",
+    worksFor: {
+      "@type": "Organization",
+      name: SITE_NAME
+    },
+    description: "Medical Doctor and Lead Educational Counselor guiding Indian students for MBBS study abroad admissions in NMC gazette compliant universities.",
+    sameAs: ["https://atlasmentor.com/"]
+  });
+}
+
+export function courseSchema(opts: { universityName: string; country: string; url: string }): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: `Bachelor of Medicine and Bachelor of Surgery (MBBS / MD) at ${opts.universityName}`,
+    description: `6-Year English medium MBBS program at ${opts.universityName}, ${opts.country}. Fully compliant with NMC 2021 Gazette rules for Indian medical students.`,
+    provider: {
+      "@type": "CollegeOrUniversity",
+      name: opts.universityName,
+      sameAs: opts.url
+    },
+    educationalCredentialAwarded: "MD / MBBS Degree",
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      "courseMode": "Full-time Onsite",
+      "duration": "P6Y",
+      "inLanguage": "en"
+    }
+  });
+}
+

@@ -17,21 +17,38 @@ function isIndexable(data: ScrapedPageData | null): boolean {
   return !data?.robots?.includes('noindex');
 }
 
+function getFileLastModified(filePath: string): Date {
+  if (!fs.existsSync(filePath)) return new Date();
+  return fs.statSync(filePath).mtime;
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
-  const homepageData = readPageData(path.join(process.cwd(), 'data/pages/index.json'));
+  const indexFile = path.join(process.cwd(), 'data/pages/index.json');
+  const homepageData = readPageData(indexFile);
   if (isIndexable(homepageData)) {
-    entries.push({ url: homepageData?.canonical || `${SITE_URL}/`, changeFrequency: 'monthly', priority: 1 });
+    entries.push({
+      url: homepageData?.canonical || `${SITE_URL}/`,
+      lastModified: getFileLastModified(indexFile),
+      changeFrequency: 'weekly',
+      priority: 1
+    });
   }
 
   const pagesDir = path.join(process.cwd(), 'data/pages');
   for (const file of fs.readdirSync(pagesDir)) {
     if (!file.endsWith('.json') || file === 'index.json') continue;
     const slug = file.replace('.json', '');
-    const data = readPageData(path.join(pagesDir, file));
+    const filePath = path.join(pagesDir, file);
+    const data = readPageData(filePath);
     if (isIndexable(data)) {
-      entries.push({ url: data?.canonical || `${SITE_URL}/${slug}/`, changeFrequency: 'monthly', priority: 0.8 });
+      entries.push({
+        url: data?.canonical || `${SITE_URL}/${slug}/`,
+        lastModified: getFileLastModified(filePath),
+        changeFrequency: 'weekly',
+        priority: 0.8
+      });
     }
   }
 
@@ -40,9 +57,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const file of fs.readdirSync(countryDir)) {
       if (!file.endsWith('.json')) continue;
       const country = file.replace('.json', '');
-      const data = readPageData(path.join(countryDir, file));
+      const filePath = path.join(countryDir, file);
+      const data = readPageData(filePath);
       if (isIndexable(data)) {
-        entries.push({ url: data?.canonical || `${SITE_URL}/mbbs-university/${country}/`, changeFrequency: 'monthly', priority: 0.8 });
+        entries.push({
+          url: data?.canonical || `${SITE_URL}/mbbs-university/${country}/`,
+          lastModified: getFileLastModified(filePath),
+          changeFrequency: 'weekly',
+          priority: 0.8
+        });
       }
     }
   }

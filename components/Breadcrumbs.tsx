@@ -12,9 +12,9 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       <nav
         aria-label="Breadcrumb"
         style={{
-          maxWidth: 1140,
+          maxWidth: 1280,
           margin: "0 auto",
-          padding: "16px 20px 0",
+          padding: "16px 15px 0",
           fontSize: 13,
           fontFamily: "Roboto, sans-serif",
           color: "#727272",

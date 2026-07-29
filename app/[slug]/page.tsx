@@ -9,6 +9,7 @@ import {
   COUNTRY_SLUGS,
   parseUniversityTitle,
   collegeSchema,
+  courseSchema,
   extractAccordionFAQs,
   faqPageSchema,
   breadcrumbSchema,
@@ -167,6 +168,9 @@ export default async function Page({ params }: PageProps) {
   const universitySchema = university
     ? collegeSchema({ name: university.name, country: university.country, url: canonical, description: data.description })
     : null;
+  const mbbsCourseSchema = university
+    ? courseSchema({ universityName: university.name, country: university.country, url: canonical })
+    : null;
   const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
 
   return (
@@ -188,6 +192,9 @@ export default async function Page({ params }: PageProps) {
       ))}
       {universitySchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: universitySchema }} />
+      )}
+      {mbbsCourseSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: mbbsCourseSchema }} />
       )}
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
