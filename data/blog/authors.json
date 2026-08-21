@@ -1,0 +1,34 @@
+[
+  {
+    "id": "dr-jitesh-kumar",
+    "name": "Dr. Jitesh Kumar",
+    "role": "Founder & Senior Medical Education Consultant",
+    "avatar": "/wp-content/uploads/2024/07/Atlas-Mentor-Pvt-Ltd.png",
+    "bio": "Dr. Jitesh Kumar is a practicing medical professional and founder of Atlas Mentor. He has counseled over 2,500+ Indian medical aspirants and specializes in NMC 2021 gazette compliance, university accreditations, and transparent overseas admissions.",
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/atlasmentors/",
+      "instagram": "https://www.instagram.com/atlasmentors/",
+      "website": "https://atlasmentor.com"
+    }
+  },
+  {
+    "id": "ananya-sharma",
+    "name": "Ananya Sharma",
+    "role": "Head of International Student Affairs & Admissions",
+    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    "bio": "Ananya Sharma manages university partnerships and embassy visa processing across Russia, Georgia, Uzbekistan, and Kazakhstan. She brings 8+ years of expertise in international student support.",
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/atlasmentors/"
+    }
+  },
+  {
+    "id": "dr-rajesh-patel",
+    "name": "Dr. Rajesh Patel",
+    "role": "FMGE / NExT Academic Advisor",
+    "avatar": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "bio": "Dr. Rajesh Patel graduated from Tashkent Medical Academy and cleared FMGE on his first attempt. He mentors foreign medical graduates through licensure exam preparation and clinical internship pathways in India.",
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/atlasmentors/"
+    }
+  }
+]
