@@ -1,4 +1,6 @@
 
+@import "tailwindcss";
+
 /* WordPress "Additional CSS" (wp-custom-css) — FAQ accordion title color and card layout */
 .single-post span.ekit-accordion-title,
 span.ekit-accordion-title,
@@ -254,6 +256,263 @@ span.ekit-accordion-title,
   border-color: #DE8017 !important;
   transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   Atlas Mentor Blog Custom Design System & Article Typography (.blog-prose)
+   ========================================================================== */
+
+.blog-prose {
+  color: #334155;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4 {
+  color: #0b192c;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 100px;
+}
+
+.blog-prose h2 {
+  font-size: 1.875rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.blog-prose h3 {
+  font-size: 1.5rem;
+}
+
+.blog-prose h4 {
+  font-size: 1.25rem;
+}
+
+.blog-prose p {
+  margin-bottom: 1.5rem;
+}
+
+.blog-prose ul,
+.blog-prose ol {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.blog-prose ul {
+  list-style-type: disc;
+}
+
+.blog-prose ol {
+  list-style-type: decimal;
+}
+
+.blog-prose li {
+  margin-bottom: 0.6rem;
+}
+
+.blog-prose strong {
+  color: #0b192c;
+  font-weight: 700;
+}
+
+.blog-blockquote {
+  border-left: 4px solid #DE8017;
+  background-color: #f8fafc;
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  font-style: italic;
+  color: #1e293b;
+}
+
+.blog-blockquote p {
+  margin-bottom: 0;
+}
+
+/* Custom Callout Alert Boxes */
+.blog-callout {
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  border-radius: 0.75rem;
+  border-left-width: 4px;
+}
+
+.blog-callout h4 {
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+  font-size: 1.1rem;
+}
+
+.blog-callout p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.callout-info {
+  background-color: #eff6ff;
+  border-left-color: #2563eb;
+  color: #1e3a8a;
+}
+.callout-info h4 { color: #1e3a8a !important; }
+
+.callout-tip {
+  background-color: #f0fdf4;
+  border-left-color: #16a34a;
+  color: #14532d;
+}
+.callout-tip h4 { color: #14532d !important; }
+
+.callout-warning {
+  background-color: #fffbe6;
+  border-left-color: #DE8017;
+  color: #7c2d12;
+}
+.callout-warning h4 { color: #7c2d12 !important; }
+
+/* Responsive Blog Data Tables */
+.blog-table-wrapper {
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.blog-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.blog-table-wrapper th {
+  background-color: #0b192c;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+}
+
+.blog-table-wrapper td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.blog-table-wrapper tr:nth-child(even) td {
+  background-color: #f8fafc;
+}
+
+.blog-table-wrapper tr:hover td {
+  background-color: #f1f5f9;
+}
+
+/* Card Hover Micro-Interactions */
+.blog-prose a {
+  color: #DE8017;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.blog-prose a:hover {
+  color: #c97112;
+}
+
+.blog-prose li::marker {
+  color: #DE8017;
+  font-weight: bold;
+}
+
+/* Card Hover Micro-Interactions */
+.blog-card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blog-card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* Animated gradient ambient background */
+.blog-hero-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(222, 128, 23, 0.12) 0%, rgba(11, 25, 44, 0.03) 70%);
+}
+
+/* ==========================================================================
+   Elementor Kit Specificity Overrides for Blog Components
+   ========================================================================== */
+
+main .text-white,
+main .text-slate-100,
+main .text-slate-200,
+main .text-slate-300,
+main a.text-white,
+main a.text-slate-200,
+main h1.text-white,
+main h2.text-white,
+main h3.text-white,
+main h4.text-white {
+  color: #ffffff !important;
+}
+
+main [class*="text-[#0B192C]"] {
+  color: #0B192C !important;
+}
+
+main [class*="text-[#DE8017]"],
+main a[class*="text-[#DE8017]"] {
+  color: #DE8017 !important;
+}
+
+/* Navigation Header Active State for Blog */
+.elementor-nav-menu li.menu-item-blog a:hover {
+  color: #DE8017 !important;
+}
+
+/* Force light text inside dark cards (CTA, Newsletter, Hero) */
+.bg-gradient-to-r h1, .bg-gradient-to-r h2, .bg-gradient-to-r h3, .bg-gradient-to-r h4,
+.bg-gradient-to-br h1, .bg-gradient-to-br h2, .bg-gradient-to-br h3, .bg-gradient-to-br h4,
+.bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, .bg-slate-900 h4,
+[class*="bg-[#0B192C]"] h1, [class*="bg-[#0B192C]"] h2, [class*="bg-[#0B192C]"] h3, [class*="bg-[#0B192C]"] h4 {
+  color: #ffffff !important;
+}
+
+.bg-gradient-to-r p, .bg-gradient-to-br p, .bg-slate-900 p, [class*="bg-[#0B192C]"] p {
+  color: #cbd5e1 !important;
+}
+
+a[class*="bg-[#DE8017]"],
+a[class*="bg-[#DE8017]"]:visited {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+a[class*="bg-white/10"],
+a[class*="bg-white/10"]:visited {
+  color: #e2e8f0 !important;
+  text-decoration: none !important;
+}
+
+/* Explicit Sticky Class to bypass Elementor's .sticky override */
+.blog-sticky-toc {
+  position: sticky !important;
+  top: 9rem !important;
+  z-index: 30 !important;
+}
+
+
+
 
 
 
