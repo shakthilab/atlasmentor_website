@@ -5,7 +5,7 @@ new_unis = [
     {
         "slug": "caucasus-university",
         "title": "Caucasus University, Georgia",
-        "img": "../wp-content/uploads/2025/02/Study-MBBS-in-Georgia.png"
+        "img": "/wp-content/uploads/2025/02/Caucasus-University-1.jpg"
     },
     {
         "slug": "caucasus-international-university",

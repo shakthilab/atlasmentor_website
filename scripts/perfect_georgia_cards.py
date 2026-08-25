@@ -44,7 +44,7 @@ all_georgia_unis = [
     {
         "slug": "caucasus-university",
         "title": "Caucasus University, Georgia",
-        "img": "/wp-content/uploads/2025/02/Study-MBBS-in-Georgia.png",
+        "img": "/wp-content/uploads/2025/02/Caucasus-University-1.jpg",
         "excerpt": "Caucasus University offers an internationally recognized 6-year English medium Medical Doctor (MD / MBBS) program in Tbilisi, Georgia with state-of-the-art simulation labs and top hospital affiliations."
     },
     {

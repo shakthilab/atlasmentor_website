@@ -18,7 +18,7 @@ def build_perfect_georgia_6_pages():
             "hostel_yr": "1,200 USD",
             "tuition_val": 6000,
             "hostel_val": 1200,
-            "img": "/wp-content/uploads/2025/02/Study-MBBS-in-Georgia.png",
+            "img": "/wp-content/uploads/2025/02/Caucasus-University-1.jpg",
             "description": "Caucasus University Georgia MBBS fees, eligibility & admission process for 2026. NMC & WHO recognized English medium medical program for Indian students.",
             "overview_p1": "Caucasus University (CU) is one of the premier higher education institutions in Georgia, located in the historical capital city of Tbilisi. Founded in 1998 in partnership with Georgia State University (USA), CU has grown into an internationally acclaimed university system comprising multiple specialized schools, including the prestigious Caucasus Medical School. The 6-year Medical Doctor (MD / MBBS equivalent) program at Caucasus University is designed according to top European healthcare education frameworks, combining rigorous basic science training with early clinical patient interaction.",
             "overview_p2": "The campus of Caucasus University is a state-of-the-art academic complex in Tbilisi featuring ultra-modern lecture halls, high-fidelity medical simulation suites, 3D digital anatomy laboratories, and biochemical research facilities. CU places heavy emphasis on evidence-based medicine, clinical problem-solving, and scientific research. Through its international partnerships, students have unique opportunities to participate in clinical observerships, joint research projects, and global medical exchange programs across Western Europe and North America.",
