@@ -133,5 +133,6 @@ export default function RichHtml({ html }: { html: string }) {
     },
   };
 
-  return <div>{parse(html, options)}</div>;
+  const sanitizedHtml = (html || '').replace(/\r/g, '');
+  return <div>{parse(sanitizedHtml, options)}</div>;
 }
