@@ -37,7 +37,7 @@ The system writes data to 6 separate tabs in the Google Sheet:
 
 ## Email Notifications
 
-Whenever a lead is processed by the Apps Script, an HTML notification is sent instantly to `info.atlasmentor@yopmail.com` containing:
+Whenever a lead is processed by the Apps Script, an HTML notification is sent instantly to `info@atlasmentor.com` containing:
 * Form Name
 * Page URL of submission
 * Mapped fields and values in a table layout
@@ -104,7 +104,7 @@ function doPost(e) {
 
 // Helper to construct and send HTML email notifications
 function sendNotificationEmail(formName, payload) {
-  const recipient = "info.atlasmentor@yopmail.com";
+  const recipient = "info@atlasmentor.com";
   const subject = "New Lead Received - " + formName;
   
   let htmlTableRows = "";
@@ -152,7 +152,7 @@ function testEmail() {
   sendNotificationEmail("Test Form Verification", {
     "Timestamp": new Date().toISOString(),
     "Name": "Jane Doe",
-    "Email": "info.atlasmentor@yopmail.com",
+    "Email": "info@atlasmentor.com",
     "Status": "Permission verified successfully!"
   });
 }

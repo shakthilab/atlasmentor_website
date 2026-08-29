@@ -95,6 +95,14 @@ export default function RichHtml({ html }: { html: string }) {
         const props = attributesToProps(domNode.attribs, domNode.name);
         return React.createElement(domNode.name, {
           ...props,
+          // The embedded <script> (e.g. Razorpay's payment-button.js) executes
+          // as part of the browser's normal parse of the server-rendered HTML
+          // and/or is re-executed by ElementorInteractions on client
+          // navigation — either way it rewrites this element's contents (e.g.
+          // swapping the <script> for a rendered button/iframe) before React
+          // hydrates. That divergence from the SSR markup is expected and
+          // intentionally third-party-owned, not a real mismatch to warn about.
+          suppressHydrationWarning: true,
           dangerouslySetInnerHTML: { __html: serializeDom(domNode.children) },
         });
       }
