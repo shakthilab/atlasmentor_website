@@ -170,7 +170,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             </Link>
 
             {/* Article Main Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B192C] tracking-tight leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00267C] tracking-tight leading-tight mb-6">
               {post.title}
             </h1>
 
@@ -190,7 +190,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                   <div>
                     <Link
                       href={`/blog/author/${post.author.id}`}
-                      className="block text-sm font-bold text-[#0B192C] hover:text-[#DE8017] transition-colors"
+                      className="block text-sm font-bold text-[#00267C] hover:text-[#DE8017] transition-colors"
                     >
                       {post.author.name}
                     </Link>

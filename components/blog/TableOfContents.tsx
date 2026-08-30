@@ -95,7 +95,7 @@ export default function TableOfContents({ contentHtml }: TableOfContentsProps) {
               } ${
                 isActive
                   ? 'text-[#DE8017] font-bold border-l-2 border-[#DE8017] -ml-[21px] pl-[19px]'
-                  : 'text-slate-600 hover:text-[#0B192C]'
+                  : 'text-slate-600 hover:text-[#00267C]'
               }`}
             >
               {item.text}

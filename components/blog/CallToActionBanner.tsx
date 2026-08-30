@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function CallToActionBanner() {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-[#0B192C] via-[#1E3A8A] to-[#0B192C] rounded-3xl p-8 sm:p-12 text-white shadow-xl my-12 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8">
+    <div className="relative overflow-hidden bg-gradient-to-r from-[#00267C] via-[#1E3A8A] to-[#00267C] rounded-3xl p-8 sm:p-12 text-white shadow-xl my-12 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8">
       {/* Glow Effects */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#DE8017]/20 rounded-full blur-3xl pointer-events-none" />
 

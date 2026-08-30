@@ -22,7 +22,7 @@ export default function BlogHero({ categories, activeCategory = 'all' }: BlogHer
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0B192C] via-[#0f243f] to-[#0B192C] text-white pt-36 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#667CB0] to-[#00267C] text-white pt-36 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8">
       {/* Decorative Glow Shapes */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#DE8017]/15 rounded-full blur-3xl animate-pulse" />

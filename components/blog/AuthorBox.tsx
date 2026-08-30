@@ -24,7 +24,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
       <div className="flex-grow">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
           <div>
-            <h4 className="text-lg font-extrabold text-[#0B192C]">
+            <h4 className="text-lg font-extrabold text-[#00267C]">
               <Link href={`/blog/author/${author.id}`} className="hover:text-[#DE8017] transition-colors">
                 {author.name}
               </Link>
@@ -34,7 +34,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
 
           <Link
             href={`/blog/author/${author.id}`}
-            className="inline-flex items-center text-xs font-bold text-[#0B192C] hover:text-[#DE8017] transition-colors"
+            className="inline-flex items-center text-xs font-bold text-[#00267C] hover:text-[#DE8017] transition-colors"
           >
             View All Articles
             <svg className="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

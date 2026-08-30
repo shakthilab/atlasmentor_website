@@ -110,7 +110,7 @@ export default async function BlogAuthorPage({ params }: AuthorPageProps) {
                 <span className="inline-block bg-[#DE8017] text-white text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
                   Verified Author
                 </span>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0B192C] mb-1">
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-[#00267C] mb-1">
                   {author.name}
                 </h1>
                 <p className="text-sm font-semibold text-[#DE8017] mb-3">{author.role}</p>
@@ -127,7 +127,7 @@ export default async function BlogAuthorPage({ params }: AuthorPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-8">
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
-                <h2 className="text-xl font-extrabold text-[#0B192C]">
+                <h2 className="text-xl font-extrabold text-[#00267C]">
                   Articles Authored by {author.name} ({posts.length})
                 </h2>
               </div>

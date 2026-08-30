@@ -15,7 +15,7 @@ export default function NewsletterCard() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#0B192C] via-[#1E3A8A] to-[#0B192C] text-white p-8 sm:p-12 rounded-3xl shadow-xl my-12 text-center relative overflow-hidden">
+    <div className="bg-gradient-to-br from-[#00267C] via-[#1E3A8A] to-[#00267C] text-white p-8 sm:p-12 rounded-3xl shadow-xl my-12 text-center relative overflow-hidden">
       <div className="max-w-2xl mx-auto relative z-10">
         <span className="inline-block bg-[#DE8017] text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-4">
           Stay Informed

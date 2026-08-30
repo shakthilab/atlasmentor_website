@@ -41,7 +41,7 @@ export default function BlogSidebar({
     <aside className="space-y-8 blog-sticky-toc">
       {/* 1. Search Box Widget */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm">
-        <h3 className="text-lg font-bold text-[#0B192C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
+        <h3 className="text-lg font-bold text-[#00267C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
           Search Articles
         </h3>
         <form onSubmit={handleSearchSubmit} className="relative">
@@ -65,7 +65,7 @@ export default function BlogSidebar({
       </div>
 
       {/* 2. Free Study Abroad Counselling CTA Box */}
-      <div className="bg-gradient-to-br from-[#0B192C] to-[#1E3A8A] p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
+      <div className="bg-gradient-to-br from-[#00267C] to-[#1E3A8A] p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
         <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-[#DE8017]/20 rounded-full blur-2xl pointer-events-none" />
         <span className="inline-block bg-[#DE8017] text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md mb-3">
           Free Consultation
@@ -84,7 +84,7 @@ export default function BlogSidebar({
 
       {/* 3. Categories Widget */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm">
-        <h3 className="text-lg font-bold text-[#0B192C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
+        <h3 className="text-lg font-bold text-[#00267C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
           Categories
         </h3>
         <ul className="space-y-2">
@@ -117,7 +117,7 @@ export default function BlogSidebar({
 
       {/* 4. Popular Posts Widget */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm">
-        <h3 className="text-lg font-bold text-[#0B192C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
+        <h3 className="text-lg font-bold text-[#00267C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
           Popular Articles
         </h3>
         <div className="space-y-4">
@@ -134,7 +134,7 @@ export default function BlogSidebar({
               </div>
               <div className="flex-grow min-w-0">
                 <span className="text-[11px] text-slate-400 font-medium">{post.publishedDate}</span>
-                <h4 className="text-xs font-bold text-[#0B192C] group-hover:text-[#DE8017] transition-colors line-clamp-2 leading-snug">
+                <h4 className="text-xs font-bold text-[#00267C] group-hover:text-[#DE8017] transition-colors line-clamp-2 leading-snug">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h4>
               </div>

@@ -43,7 +43,7 @@ export default async function BlogSearchPage({ searchParams }: SearchPageProps) 
             <span className="font-semibold text-slate-900">Search Results</span>
           </nav>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0B192C] mb-4">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#00267C] mb-4">
             {query ? (
               <>
                 Search Results for <span className="text-[#DE8017]">"{query}"</span>
@@ -80,7 +80,7 @@ export default async function BlogSearchPage({ searchParams }: SearchPageProps) 
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#0B192C] mb-2">No Articles Found</h3>
+                  <h3 className="text-xl font-bold text-[#00267C] mb-2">No Articles Found</h3>
                   <p className="text-slate-600 text-sm max-w-md mx-auto">
                     We couldn't find any articles matching "{query}". Try checking spelling, using different keywords, or explore our popular categories.
                   </p>

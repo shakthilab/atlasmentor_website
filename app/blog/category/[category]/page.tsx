@@ -88,7 +88,7 @@ export default async function BlogCategoryPage({ params, searchParams }: Categor
 
       <main className="min-h-screen bg-slate-50/60 pb-20">
         {/* Category Hero Banner */}
-        <section className="bg-gradient-to-b from-[#0B192C] via-[#0f243f] to-[#0B192C] text-white pt-36 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+        <section className="bg-gradient-to-br from-[#667CB0] to-[#00267C] text-white pt-36 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
           <div className="max-w-4xl mx-auto relative z-10">
             {/* Breadcrumb */}
             <nav className="flex items-center justify-center space-x-2 text-xs text-slate-300 mb-6">
@@ -119,7 +119,7 @@ export default async function BlogCategoryPage({ params, searchParams }: Categor
             {/* Main Articles Grid (8 Cols) */}
             <div className="lg:col-span-8">
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
-                <h2 className="text-xl font-extrabold text-[#0B192C]">
+                <h2 className="text-xl font-extrabold text-[#00267C]">
                   {category.name} Articles ({paginatedData.totalPosts})
                 </h2>
               </div>

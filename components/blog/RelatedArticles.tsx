@@ -15,7 +15,7 @@ export default function RelatedArticles({ posts }: RelatedArticlesProps) {
           <span className="text-xs font-bold uppercase tracking-wider text-[#DE8017]">
             Keep Reading
           </span>
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0B192C]">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-[#00267C]">
             Related Articles
           </h3>
         </div>

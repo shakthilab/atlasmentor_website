@@ -30,7 +30,7 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
           </span>
           <Link
             href={`/blog/category/${post.category}`}
-            className="bg-white/90 backdrop-blur-md text-[#0B192C] text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-sm hover:bg-white transition-colors"
+            className="bg-white/90 backdrop-blur-md text-[#00267C] text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-sm hover:bg-white transition-colors"
           >
             {post.categoryName || post.category}
           </Link>
@@ -48,7 +48,7 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
           </div>
 
           {/* Heading */}
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#0B192C] hover:text-[#DE8017] transition-colors leading-tight mb-4">
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#00267C] hover:text-[#DE8017] transition-colors leading-tight mb-4">
             <Link href={`/blog/${post.slug}`}>
               {post.title}
             </Link>
@@ -75,7 +75,7 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
                   />
                 </div>
                 <div>
-                  <span className="block text-sm font-bold text-[#0B192C] group-hover/author:text-[#DE8017] transition-colors">
+                  <span className="block text-sm font-bold text-[#00267C] group-hover/author:text-[#DE8017] transition-colors">
                     {post.author.name}
                   </span>
                   <span className="block text-xs text-slate-500 line-clamp-1">{post.author.role}</span>
@@ -85,7 +85,7 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
 
             <Link
               href={`/blog/${post.slug}`}
-              className="bg-[#0B192C] text-white hover:bg-[#DE8017] px-5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 shadow-md inline-flex items-center space-x-2"
+              className="bg-[#00267C] text-white hover:bg-[#DE8017] px-5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 shadow-md inline-flex items-center space-x-2"
             >
               <span>Continue Reading</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

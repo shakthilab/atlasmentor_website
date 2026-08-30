@@ -41,7 +41,7 @@ export default function ArticleCard({ post, priority = false }: ArticleCardProps
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-[#0B192C] group-hover:text-[#DE8017] transition-colors line-clamp-2 mb-3 leading-snug">
+        <h3 className="text-xl font-bold text-[#00267C] group-hover:text-[#DE8017] transition-colors line-clamp-2 mb-3 leading-snug">
           <Link href={`/blog/${post.slug}`}>
             {post.title}
           </Link>

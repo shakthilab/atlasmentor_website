@@ -74,7 +74,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   <span className="text-xs font-bold uppercase tracking-wider text-[#DE8017]">
                     Editor's Choice
                   </span>
-                  <h2 className="text-2xl font-extrabold text-[#0B192C]">
+                  <h2 className="text-2xl font-extrabold text-[#00267C]">
                     Featured Article
                   </h2>
                 </div>
@@ -88,7 +88,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             {/* Main Articles Grid (8 Cols) */}
             <div className="lg:col-span-8">
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
-                <h2 className="text-2xl font-extrabold text-[#0B192C]">
+                <h2 className="text-2xl font-extrabold text-[#00267C]">
                   Latest Articles
                 </h2>
                 <span className="text-xs text-slate-500 font-medium">
