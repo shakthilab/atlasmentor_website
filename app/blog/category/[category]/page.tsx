@@ -86,7 +86,7 @@ export default async function BlogCategoryPage({ params, searchParams }: Categor
         dangerouslySetInnerHTML={{ __html: breadcrumbSchema(breadcrumbs) }}
       />
 
-      <main className="min-h-screen bg-slate-50/60 pb-20">
+      <main className="blog-shell min-h-screen bg-slate-50/60 pb-20">
         {/* Category Hero Banner */}
         <section className="bg-gradient-to-br from-[#667CB0] to-[#00267C] text-white pt-36 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
           <div className="max-w-4xl mx-auto relative z-10">

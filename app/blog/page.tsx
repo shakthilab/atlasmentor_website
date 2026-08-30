@@ -60,7 +60,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         dangerouslySetInnerHTML={{ __html: breadcrumbSchema(breadcrumbs) }}
       />
 
-      <main className="min-h-screen bg-slate-50/60 pb-20">
+      <main className="blog-shell min-h-screen bg-slate-50/60 pb-20">
         {/* Hero Section */}
         <BlogHero categories={categories} activeCategory="all" />
 

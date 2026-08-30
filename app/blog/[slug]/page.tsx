@@ -146,7 +146,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         />
       )}
 
-      <main className="min-h-screen bg-slate-50/60 pb-20 pt-32 sm:pt-36 lg:pt-40">
+      <main className="blog-shell min-h-screen bg-slate-50/60 pb-20 pt-32 sm:pt-36 lg:pt-40">
         {/* Top Hero Container */}
         <header className="bg-white border-b border-slate-200/80 py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">

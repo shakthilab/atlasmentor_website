@@ -77,6 +77,17 @@ span.ekit-accordion-title,
     opacity: 1 !important;
     visibility: visible !important;
   }
+
+  /* The open dropdown and its parent <li> declare no z-index, so with the
+     nav now wrapping "Contact Us" onto a second row directly under
+     "Universities" (an extra item was added to the row), DOM order alone
+     decides stacking and the later "Contact Us" sibling paints over the
+     open submenu. Raise both above their unpositioned siblings. */
+  .elementor-nav-menu li.menu-item-has-children:hover,
+  .elementor-nav-menu li.menu-item-has-children:focus-within {
+    position: relative;
+    z-index: 9999;
+  }
 }
 
 /* Premium staggered bottom-to-up fade animations for the hero section */
@@ -473,43 +484,61 @@ main h4.text-white {
   color: #ffffff !important;
 }
 
-main [class*="text-[#00267C]"] {
+main [class~="text-[#00267C]"] {
   color: #00267C !important;
 }
 
-main [class*="text-[#DE8017]"],
-main a[class*="text-[#DE8017]"] {
+main [class~="text-[#DE8017]"] {
   color: #DE8017 !important;
 }
+
+/* The two rules above used to be `[class*="..."]` (substring match), which
+   also matched `hover:text-[#DE8017]` etc. — any element with an ORANGE
+   HOVER class permanently showed orange, even at rest (e.g. pagination page
+   numbers). `[class~="..."]` matches only a whole class-list token, so a
+   `hover:`/`focus:`/`group-hover:`-prefixed variant (a different token) no
+   longer matches here. */
 
 /* Navigation Header Active State for Blog */
 .elementor-nav-menu li.menu-item-blog a:hover {
   color: #DE8017 !important;
 }
 
+/* A WordPress plugin's base CSS ships a bare, unlayered
+   `a{background-color:transparent;text-decoration:none;color:#c36}`
+   (public/wp-content/combined-global-*.css). Being unlayered, it wins over
+   EVERY layered Tailwind bg-* or text-* utility on <Link>/<a> regardless of
+   specificity — every colored pill/button built from a <Link> (category
+   badges, pagination, CTA buttons, "Continue Reading" links, ...) was
+   silently losing its background and falling back to that plugin's maroon
+   link color. `revert-layer` hands the property back to the next-highest
+   layer that sets it for this exact element — i.e. our own Tailwind
+   utilities layer (including its `:hover` rules) — instead of hardcoding
+   every color/background combination an <a> might use. Scoped to
+   `.blog-shell` (the blog pages' <main> wrapper) so it can't affect anchors
+   on the rest of the site. */
+.blog-shell a {
+  background-color: revert-layer;
+  color: revert-layer;
+  text-decoration: revert-layer;
+}
+
 /* Force light text inside dark cards (CTA, Newsletter, Hero) */
 .bg-gradient-to-r h1, .bg-gradient-to-r h2, .bg-gradient-to-r h3, .bg-gradient-to-r h4,
 .bg-gradient-to-br h1, .bg-gradient-to-br h2, .bg-gradient-to-br h3, .bg-gradient-to-br h4,
 .bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, .bg-slate-900 h4,
-[class*="bg-[#00267C]"] h1, [class*="bg-[#00267C]"] h2, [class*="bg-[#00267C]"] h3, [class*="bg-[#00267C]"] h4 {
+[class~="bg-[#00267C]"] h1, [class~="bg-[#00267C]"] h2, [class~="bg-[#00267C]"] h3, [class~="bg-[#00267C]"] h4 {
   color: #ffffff !important;
 }
 
-.bg-gradient-to-r p, .bg-gradient-to-br p, .bg-slate-900 p, [class*="bg-[#00267C]"] p {
+.bg-gradient-to-r p, .bg-gradient-to-br p, .bg-slate-900 p, [class~="bg-[#00267C]"] p {
   color: #cbd5e1 !important;
 }
 
-a[class*="bg-[#DE8017]"],
-a[class*="bg-[#DE8017]"]:visited {
-  color: #ffffff !important;
-  text-decoration: none !important;
-}
-
-a[class*="bg-white/10"],
-a[class*="bg-white/10"]:visited {
-  color: #e2e8f0 !important;
-  text-decoration: none !important;
-}
+/* a[class*="bg-[#DE8017]"] / a[class*="bg-white/10"] color-forcing rules
+   used to live here — superseded by the `.blog-shell a { ... revert-layer }`
+   rule above, which handles every <a> background/color combination
+   generally instead of one hardcoded pair at a time. */
 
 /* Explicit Sticky Class to bypass Elementor's .sticky override */
 .blog-sticky-toc {
