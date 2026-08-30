@@ -9,14 +9,12 @@ import { BlogCategory, BlogPost } from '@/lib/blog-types';
 interface BlogSidebarProps {
   categories: BlogCategory[];
   popularPosts: BlogPost[];
-  latestPosts: BlogPost[];
   currentCategory?: string;
 }
 
 export default function BlogSidebar({
   categories,
   popularPosts,
-  latestPosts,
   currentCategory,
 }: BlogSidebarProps) {
   const router = useRouter();
@@ -128,8 +126,9 @@ export default function BlogSidebar({
               <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
                 <Image
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.imageAlt || post.title}
                   fill
+                  sizes="64px"
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -144,34 +143,7 @@ export default function BlogSidebar({
         </div>
       </div>
 
-      {/* 5. Recent Comments Placeholder */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm">
-        <h3 className="text-lg font-bold text-[#0B192C] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#DE8017]">
-          Recent Student Discussions
-        </h3>
-        <ul className="space-y-3.5 text-xs text-slate-600">
-          <li className="border-b border-slate-100 pb-2.5">
-            <span className="font-semibold text-[#0B192C]">Rohan Verma</span> on{' '}
-            <Link href="/blog/complete-guide-to-studying-mbbs-abroad-2026" className="text-[#DE8017] hover:underline font-medium">
-              Complete Guide to Studying MBBS Abroad...
-            </Link>
-          </li>
-          <li className="border-b border-slate-100 pb-2.5">
-            <span className="font-semibold text-[#0B192C]">Priya Nair</span> on{' '}
-            <Link href="/blog/top-nmc-approved-medical-universities-georgia-russia" className="text-[#DE8017] hover:underline font-medium">
-              Top NMC Approved Medical Universities in Georgia...
-            </Link>
-          </li>
-          <li>
-            <span className="font-semibold text-[#0B192C]">Amit Patel</span> on{' '}
-            <Link href="/blog/nmc-gazette-rules-2021-next-exam-guide" className="text-[#DE8017] hover:underline font-medium">
-              NMC Gazette Rules 2021 & NExT Exam Guide...
-            </Link>
-          </li>
-        </ul>
-      </div>
-
-      {/* 6. Newsletter Subscription Widget */}
+      {/* 5. Newsletter Subscription Widget */}
       <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-sm">
         <h4 className="text-base font-bold mb-2">Subscribe for Admission Updates</h4>
         <p className="text-xs text-slate-400 mb-4 leading-relaxed">

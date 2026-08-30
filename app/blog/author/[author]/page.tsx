@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAuthorById, getAllAuthors, getPostsByAuthor, getAllCategories, getPopularPosts, getAllPosts } from '@/lib/blog-data';
+import { getAuthorById, getAllAuthors, getPostsByAuthor, getAllCategories, getPopularPosts } from '@/lib/blog-data';
 import ArticleCard from '@/components/blog/ArticleCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { SITE_NAME, SITE_URL, authorPersonSchema, breadcrumbSchema } from '@/lib/seo';
@@ -57,8 +57,6 @@ export default async function BlogAuthorPage({ params }: AuthorPageProps) {
   const posts = getPostsByAuthor(authorId);
   const categories = getAllCategories();
   const popularPosts = getPopularPosts(4);
-  const allPosts = getAllPosts();
-  const latestPosts = allPosts.slice(0, 4);
 
   const breadcrumbs = [
     { name: 'Home', url: `${SITE_URL}/` },
@@ -103,6 +101,7 @@ export default async function BlogAuthorPage({ params }: AuthorPageProps) {
                   src={author.avatar}
                   alt={author.name}
                   fill
+                  sizes="128px"
                   className="object-cover"
                 />
               </div>
@@ -150,7 +149,6 @@ export default async function BlogAuthorPage({ params }: AuthorPageProps) {
               <BlogSidebar
                 categories={categories}
                 popularPosts={popularPosts}
-                latestPosts={latestPosts}
               />
             </div>
           </div>

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
+import { getAllPosts, getAllCategories, getAllAuthors } from '@/lib/blog-data';
 
 interface ScrapedPageData {
   canonical?: string;
@@ -68,6 +69,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
         });
       }
     }
+  }
+
+  entries.push({
+    url: `${SITE_URL}/blog/`,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  });
+
+  for (const post of getAllPosts()) {
+    entries.push({
+      url: `${SITE_URL}/blog/${post.slug}/`,
+      lastModified: new Date(post.updatedDate || post.publishedDate),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    });
+  }
+
+  for (const category of getAllCategories()) {
+    entries.push({
+      url: `${SITE_URL}/blog/category/${category.slug}/`,
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    });
+  }
+
+  for (const author of getAllAuthors()) {
+    entries.push({
+      url: `${SITE_URL}/blog/author/${author.id}/`,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    });
   }
 
   return entries;

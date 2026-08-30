@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { searchPosts, getAllCategories, getPopularPosts, getAllPosts } from '@/lib/blog-data';
+import { searchPosts, getAllCategories, getPopularPosts } from '@/lib/blog-data';
 import ArticleCard from '@/components/blog/ArticleCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
@@ -29,8 +29,6 @@ export default async function BlogSearchPage({ searchParams }: SearchPageProps) 
   const results = query ? searchPosts(query) : [];
   const categories = getAllCategories();
   const popularPosts = getPopularPosts(4);
-  const allPosts = getAllPosts();
-  const latestPosts = allPosts.slice(0, 4);
 
   return (
     <main className="min-h-screen bg-slate-50/60 pb-20 pt-32 sm:pt-36 lg:pt-40">
@@ -111,7 +109,6 @@ export default async function BlogSearchPage({ searchParams }: SearchPageProps) 
             <BlogSidebar
               categories={categories}
               popularPosts={popularPosts}
-              latestPosts={latestPosts}
             />
           </div>
         </div>

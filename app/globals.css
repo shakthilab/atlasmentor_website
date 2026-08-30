@@ -1,5 +1,12 @@
 
-@import "tailwindcss";
+/* Tailwind is scoped to theme tokens + utility classes only — deliberately
+   NOT `@import "tailwindcss"`, which also pulls in Preflight (a global
+   `*, ::before, ::after { margin:0; padding:0; border:0; box-sizing:border-box }`
+   reset). This site's pages are scraped WordPress/Elementor markup with
+   hand-tuned spacing that a sitewide reset would visibly break. Only the
+   new blog components (built with Tailwind utility classes) need this. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 /* WordPress "Additional CSS" (wp-custom-css) — FAQ accordion title color and card layout */
 .single-post span.ekit-accordion-title,

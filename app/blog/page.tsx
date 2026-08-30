@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import {
-  getAllPosts,
   getAllCategories,
   getFeaturedPost,
   getPopularPosts,
@@ -41,7 +40,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const categories = getAllCategories();
   const featuredPost = getFeaturedPost();
   const popularPosts = getPopularPosts(4);
-  const allPosts = getAllPosts();
 
   // Exclude featured post from latest grid if on page 1
   const filterLimit = 6;
@@ -49,8 +47,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     page: currentPage,
     limit: filterLimit,
   });
-
-  const latestPosts = allPosts.slice(0, 4);
 
   const breadcrumbs = [
     { name: 'Home', url: `${SITE_URL}/` },
@@ -125,7 +121,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <BlogSidebar
                 categories={categories}
                 popularPosts={popularPosts}
-                latestPosts={latestPosts}
                 currentCategory="all"
               />
             </div>

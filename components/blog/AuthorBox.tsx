@@ -15,6 +15,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           src={author.avatar}
           alt={author.name}
           fill
+          sizes="96px"
           className="object-cover"
         />
       </div>

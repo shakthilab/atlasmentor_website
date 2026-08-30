@@ -6,7 +6,6 @@ import {
   getAllCategories,
   getFilteredPosts,
   getPopularPosts,
-  getAllPosts,
 } from '@/lib/blog-data';
 import ArticleCard from '@/components/blog/ArticleCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
@@ -66,8 +65,6 @@ export default async function BlogCategoryPage({ params, searchParams }: Categor
 
   const categories = getAllCategories();
   const popularPosts = getPopularPosts(4);
-  const allPosts = getAllPosts();
-  const latestPosts = allPosts.slice(0, 4);
 
   const filterLimit = 6;
   const paginatedData = getFilteredPosts({
@@ -152,7 +149,6 @@ export default async function BlogCategoryPage({ params, searchParams }: Categor
               <BlogSidebar
                 categories={categories}
                 popularPosts={popularPosts}
-                latestPosts={latestPosts}
                 currentCategory={category.slug}
               />
             </div>

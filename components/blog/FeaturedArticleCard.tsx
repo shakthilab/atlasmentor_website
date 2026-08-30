@@ -11,10 +11,10 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
     <article className="bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-lg blog-card-hover grid grid-cols-1 lg:grid-cols-12 mb-12">
       {/* Thumbnail Container (Lg: 7 cols) */}
       <div className="relative lg:col-span-7 min-h-[320px] lg:min-h-[420px] bg-slate-100 overflow-hidden group">
-        <Link href={`/blog/${post.slug}`} className="block w-full h-full">
+        <Link href={`/blog/${post.slug}`} className="relative block w-full h-full">
           <Image
             src={post.coverImage}
-            alt={post.title}
+            alt={post.imageAlt || post.title}
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 60vw"
@@ -70,6 +70,7 @@ export default function FeaturedArticleCard({ post }: FeaturedArticleCardProps) 
                     src={post.author.avatar}
                     alt={post.author.name}
                     fill
+                    sizes="40px"
                     className="object-cover"
                   />
                 </div>

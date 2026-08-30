@@ -12,10 +12,10 @@ export default function ArticleCard({ post, priority = false }: ArticleCardProps
     <article className="group bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm blog-card-hover flex flex-col h-full">
       {/* Thumbnail */}
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
-        <Link href={`/blog/${post.slug}`} className="block w-full h-full">
+        <Link href={`/blog/${post.slug}`} className="relative block w-full h-full">
           <Image
             src={post.coverImage}
-            alt={post.title}
+            alt={post.imageAlt || post.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
@@ -61,6 +61,7 @@ export default function ArticleCard({ post, priority = false }: ArticleCardProps
                   src={post.author.avatar}
                   alt={post.author.name}
                   fill
+                  sizes="32px"
                   className="object-cover"
                 />
               </div>

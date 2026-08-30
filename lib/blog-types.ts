@@ -38,6 +38,7 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   coverImage: string;
+  imageAlt: string; // Descriptive, SEO-friendly alt text for coverImage
   category: string; // Slug of category
   categoryName?: string; // Display name
   authorId: string;

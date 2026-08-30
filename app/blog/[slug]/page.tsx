@@ -9,7 +9,6 @@ import SocialShareButtons from '@/components/blog/SocialShareButtons';
 import AuthorBox from '@/components/blog/AuthorBox';
 import CallToActionBanner from '@/components/blog/CallToActionBanner';
 import RelatedArticles from '@/components/blog/RelatedArticles';
-import CommentsSection from '@/components/blog/CommentsSection';
 import NewsletterCard from '@/components/blog/NewsletterCard';
 import {
   SITE_NAME,
@@ -48,6 +47,7 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
   return {
     title: pageTitle,
     description: pageDescription,
+    keywords: post.seo?.keywords,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
           url: post.coverImage,
           width: 1200,
           height: 630,
-          alt: post.title,
+          alt: post.imageAlt || post.title,
         },
       ],
     },
@@ -183,6 +183,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                       src={post.author.avatar}
                       alt={post.author.name}
                       fill
+                      sizes="44px"
                       className="object-cover"
                     />
                   </div>
@@ -212,7 +213,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-200 border border-white">
             <Image
               src={post.coverImage}
-              alt={post.title}
+              alt={post.imageAlt || post.title}
               fill
               priority
               className="object-cover"
@@ -259,9 +260,6 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
               {/* Related Articles */}
               <RelatedArticles posts={relatedPosts} />
-
-              {/* Discussion / Comments Placeholder */}
-              <CommentsSection />
 
               {/* Newsletter Subscription Card */}
               <NewsletterCard />
