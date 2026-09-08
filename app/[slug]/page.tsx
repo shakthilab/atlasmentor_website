@@ -13,7 +13,6 @@ import {
   extractAccordionFAQs,
   faqPageSchema,
   breadcrumbSchema,
-  injectImageDimensions,
   type BreadcrumbItem,
 } from '@/lib/seo';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -208,7 +207,7 @@ export default async function Page({ params }: PageProps) {
       )}
 
       {/* Page Content */}
-      <RichHtml html={injectImageDimensions(processedBody)} />
+      <RichHtml html={processedBody} />
     </main>
   );
 }

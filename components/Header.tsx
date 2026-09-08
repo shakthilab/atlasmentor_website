@@ -123,7 +123,7 @@ export default function Header() {
           text-decoration: none !important;
         }
       `}} />
-      <RichHtml html={headerHtml} allowPriority={false} />
+      <RichHtml html={headerHtml} />
       <HeaderClient />
     </>
   );

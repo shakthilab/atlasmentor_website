@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface CarouselSettings {
@@ -18,12 +18,8 @@ interface SwiperConstructor {
 
 export default function ElementorInteractions() {
   const pathname = usePathname();
-  const swiperTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let swiperRetryCount = 0;
-    const MAX_SWIPER_RETRIES = 10;
-
     // 1. Accordion click delegation handler
     const handleAccordionToggle = (e: MouseEvent) => {
       const toggler = (e.target as HTMLElement).closest('.ekit-accordion--toggler');
@@ -33,6 +29,7 @@ export default function ElementorInteractions() {
         let targetSelector = toggler.getAttribute('data-target') || toggler.getAttribute('href');
         if (!targetSelector) return;
         
+        // Extract hash part if present (e.g. /#Collapse-... -> #Collapse-...) to prevent querySelector syntax errors
         if (targetSelector.includes('#')) {
           targetSelector = '#' + targetSelector.split('#')[1];
         }
@@ -53,32 +50,25 @@ export default function ElementorInteractions() {
       }
     };
 
-    // 2. Swiper carousels initialization helper (Conditional & Event-Driven)
+    // 2. Swiper carousels initialization helper
     const initSwipers = () => {
-      // FAST EXIT 1: If no uninitialized swiper containers exist on the page, exit in 0ms!
-      const uninitializedSwipers = document.querySelectorAll(
-        '.elementor-main-swiper.swiper:not([data-swiper-initialized="true"]), .swiper:not([data-swiper-initialized="true"])'
-      );
-      if (uninitializedSwipers.length === 0) return;
-
       const SwiperClass = (window as unknown as { Swiper?: SwiperConstructor }).Swiper;
       if (!SwiperClass) {
-        if (swiperRetryCount < MAX_SWIPER_RETRIES) {
-          swiperRetryCount++;
-          if (swiperTimerRef.current) clearTimeout(swiperTimerRef.current);
-          swiperTimerRef.current = setTimeout(initSwipers, 200);
-        }
+        // Retry in 200ms if Swiper script hasn't fully loaded yet
+        setTimeout(initSwipers, 200);
         return;
       }
 
-      uninitializedSwipers.forEach((el) => {
-        if ((el as Element & { swiper?: unknown }).swiper || el.classList.contains('swiper-initialized') || el.getAttribute('data-swiper-initialized') === 'true') {
-          el.setAttribute('data-swiper-initialized', 'true');
-          return;
-        }
+      const swiperElements = document.querySelectorAll('.elementor-main-swiper.swiper');
+      swiperElements.forEach((el) => {
+        // Check if swiper is already initialized on this element
+        if ((el as Element & { swiper?: unknown }).swiper || el.classList.contains('swiper-initialized') || el.getAttribute('data-swiper-initialized') === 'true') return;
 
+        // Mark it so we don't try to initialize it multiple times simultaneously
         el.setAttribute('data-swiper-initialized', 'true');
 
+        // Testimonial carousels always show a single slide at a time,
+        // unlike generic image/media carousels which show multiple.
         const widgetEl = el.closest('.elementor-widget-testimonial-carousel');
 
         try {
@@ -136,6 +126,7 @@ export default function ElementorInteractions() {
     // 3. Viewport scroll animation trigger using IntersectionObserver
     const initViewportAnimations = () => {
       if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+        // Fallback: if IntersectionObserver is not supported, just make all elements visible
         const animatedElements = document.querySelectorAll('.elementor-invisible');
         animatedElements.forEach((el) => {
           el.classList.remove('elementor-invisible');
@@ -144,9 +135,9 @@ export default function ElementorInteractions() {
       }
 
       const observerOptions = {
-        root: null,
+        root: null, // viewport
         rootMargin: '0px',
-        threshold: 0.1,
+        threshold: 0.1, // trigger when 10% of the element is visible
       };
 
       const handleIntersection = (entries: IntersectionObserverEntry[], obs: IntersectionObserver) => {
@@ -154,6 +145,7 @@ export default function ElementorInteractions() {
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
             
+            // Extract animation details
             const settingsStr = el.getAttribute('data-settings');
             let animationName = '';
             let animationDelay = 0;
@@ -168,6 +160,7 @@ export default function ElementorInteractions() {
               }
             }
 
+            // Standard Elementor classes addition
             if (animationName && animationName !== 'none') {
               if (animationDelay > 0) {
                 el.style.animationDelay = `${animationDelay}ms`;
@@ -176,9 +169,11 @@ export default function ElementorInteractions() {
               el.classList.add('animated', animationName);
               el.classList.remove('elementor-invisible');
             } else {
+              // No animation specified but has elementor-invisible
               el.classList.remove('elementor-invisible');
             }
 
+            // Stop observing this element once animated
             obs.unobserve(el);
           }
         });
@@ -187,6 +182,7 @@ export default function ElementorInteractions() {
       const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
       const observeElements = () => {
+        // Find all elements with elementor-invisible class that have not been observed yet
         const animatedElements = document.querySelectorAll('.elementor-invisible:not([data-observed])');
         animatedElements.forEach((el) => {
           el.setAttribute('data-observed', 'true');
@@ -194,22 +190,26 @@ export default function ElementorInteractions() {
         });
       };
 
+      // Initial run
       observeElements();
 
       return { observer, observeElements };
     };
 
-    // 4. Force execution of Razorpay scripts inside elementor-shortcode (Conditional)
+    // 4. Force execution of Razorpay scripts inside elementor-shortcode
     const executeRazorpayScripts = () => {
-      const shortcodeScripts = document.querySelectorAll('.elementor-shortcode script:not([data-executed="true"])');
-      if (shortcodeScripts.length === 0) return;
-
+      const shortcodeScripts = document.querySelectorAll('.elementor-shortcode script');
       shortcodeScripts.forEach((scriptEl) => {
+        if (scriptEl.getAttribute('data-executed') === 'true') return;
+        
         const container = scriptEl.closest('.elementor-shortcode');
         if (!container) return;
 
+        // Clean up duplicate buttons if they already exist
         const existingButtons = container.querySelectorAll('.PaymentButton, .razorpay-embed-btn, a[href*="razorpay.com"]');
         if (existingButtons.length > 0) {
+          // If at least one button exists, we don't need to re-execute the script.
+          // Keep the first button and clean up any additional duplicates.
           if (existingButtons.length > 1) {
             for (let i = 1; i < existingButtons.length; i++) {
               existingButtons[i].remove();
@@ -222,6 +222,7 @@ export default function ElementorInteractions() {
         const parent = scriptEl.parentNode;
         if (!parent) return;
         
+        // Mark script as executed before replacing to prevent multiple executions if multiple mutations fire quickly
         scriptEl.setAttribute('data-executed', 'true');
 
         const newScript = document.createElement('script');
@@ -277,6 +278,7 @@ export default function ElementorInteractions() {
     document.addEventListener('click', handleAccordionToggle);
     document.addEventListener('click', handleShareClick);
     
+    // Clean up stale/recycled DOM node attributes and classes on route change
     const invisibleElements = document.querySelectorAll('.elementor-invisible');
     invisibleElements.forEach((el) => {
       el.removeAttribute('data-observed');
@@ -301,60 +303,26 @@ export default function ElementorInteractions() {
       el.classList.remove('swiper-initialized');
     });
 
+    // Initialize swiper, animations and scripts on route change/mount
     initSwipers();
     const animObj = initViewportAnimations();
     executeRazorpayScripts();
 
-    const mutationObserver = new MutationObserver((mutations) => {
-      let hasRelevantChanges = false;
-      let hasSwiperTarget = false;
-      let hasAnimTarget = false;
-      let hasScriptTarget = false;
-
-      for (let i = 0; i < mutations.length; i++) {
-        const mutation = mutations[i];
-        if (mutation.type !== 'childList' || mutation.addedNodes.length === 0) continue;
-
-        for (let j = 0; j < mutation.addedNodes.length; j++) {
-          const node = mutation.addedNodes[j];
-          if (node.nodeType !== 1) continue;
-          const el = node as HTMLElement;
-
-          if (el.querySelector) {
-            if (el.classList.contains('swiper') || el.querySelector('.swiper')) {
-              hasSwiperTarget = true;
-              hasRelevantChanges = true;
-            }
-            if (el.classList.contains('elementor-invisible') || el.querySelector('.elementor-invisible:not([data-observed])')) {
-              hasAnimTarget = true;
-              hasRelevantChanges = true;
-            }
-            if (el.classList.contains('elementor-shortcode') || el.querySelector('.elementor-shortcode script:not([data-executed])')) {
-              hasScriptTarget = true;
-              hasRelevantChanges = true;
-            }
-          }
-        }
+    // Set up MutationObserver to handle client-side page updates, dynamic renders, and React hydration node replacement
+    const mutationObserver = new MutationObserver(() => {
+      initSwipers();
+      if (animObj) {
+        animObj.observeElements();
       }
-
-      if (!hasRelevantChanges) return;
-
-      if (hasSwiperTarget) initSwipers();
-      if (hasAnimTarget && animObj) animObj.observeElements();
-      if (hasScriptTarget) executeRazorpayScripts();
+      executeRazorpayScripts();
     });
 
-    const targetContainer = document.getElementById('page') || document.body;
-    mutationObserver.observe(targetContainer, {
+    mutationObserver.observe(document.body, {
       childList: true,
       subtree: true,
     });
 
     return () => {
-      if (swiperTimerRef.current) {
-        clearTimeout(swiperTimerRef.current);
-        swiperTimerRef.current = null;
-      }
       document.removeEventListener('click', handleAccordionToggle);
       document.removeEventListener('click', handleShareClick);
       if (animObj && animObj.observer) {

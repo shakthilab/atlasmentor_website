@@ -4,11 +4,13 @@ import os
 import re
 import posixpath
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+ROOT = "/home/shakthi/Desktop/freelancer/atlasmentor_website"
 PUBLIC = os.path.join(ROOT, "public")
 
 GLOBAL_STYLES = [
+    "/wp-content/plugins/metronet-profile-picture/dist/blocks.style.build.css",
     "/wp-content/plugins/menu-image/includes/css/menu-image.css",
+    "/wp-includes/css/dashicons.min.css",
     "/wp-content/themes/hello-elementor/style.min.css",
     "/wp-content/themes/hello-elementor/theme.min.css",
     "/wp-content/plugins/elementor/assets/css/frontend.min.css",
@@ -29,6 +31,10 @@ GLOBAL_STYLES = [
     "/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css",
     "/wp-content/plugins/pro-elements/assets/css/widget-blockquote.min.css",
     "/wp-content/plugins/elementor/assets/lib/animations/styles/e-animation-float.min.css",
+    "/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css",
+    "/wp-content/plugins/elementor/assets/css/conditionals/e-swiper.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-testimonial-carousel.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-carousel-module-base.min.css",
     "/wp-content/uploads/elementor/css/post-61.css",
     "/wp-content/uploads/elementor/css/post-64.css",
     "/wp-content/uploads/elementor/css/post-664.css",
@@ -38,8 +44,12 @@ GLOBAL_STYLES = [
     "/wp-content/uploads/elementor/google-fonts/css/raleway.css",
     "/wp-content/uploads/elementor/google-fonts/css/roboto.css",
     "/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css",
+    # Below: shared by nearly every university/study-guide page (per-page
+    # widget styles + reused Elementor template partials) but previously
+    # loaded as separate render-blocking requests on those templates.
     "/wp-content/plugins/elementor/assets/css/widget-image-box.min.css",
     "/wp-content/plugins/pro-elements/assets/css/widget-post-info.min.css",
+    "/wp-content/plugins/pro-elements/assets/css/widget-share-buttons.min.css",
     "/wp-content/plugins/pro-elements/assets/css/widget-author-box.min.css",
     "/wp-content/plugins/pro-elements/assets/css/widget-posts.min.css",
     "/wp-content/plugins/pro-elements/assets/css/modules/sticky.min.css",
@@ -75,6 +85,10 @@ for href in GLOBAL_STYLES:
 
 combined = "\n".join(chunks)
 
+# Content-hashed filename so it can be served with a 1-year immutable
+# Cache-Control header (see the matching next.config.ts headers() rule) —
+# any content change produces a new filename instead of invalidating a
+# cached one.
 content_hash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:10]
 out_dir = os.path.join(PUBLIC, "wp-content")
 out_path = os.path.join(out_dir, f"combined-global-{content_hash}.css")
