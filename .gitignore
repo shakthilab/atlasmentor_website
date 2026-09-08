@@ -52,3 +52,7 @@ next-env.d.ts
 # scrape debugging artifacts
 /dom.html
 /screenshot.png
+
+# scratch directory
+/scratch/
+

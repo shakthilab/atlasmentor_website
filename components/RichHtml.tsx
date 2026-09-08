@@ -4,13 +4,7 @@ import parse, { Element, attributesToProps, type HTMLReactParserOptions } from "
 import serializeDom from "dom-serializer";
 import React from "react";
 import Image from "next/image";
-import dimensions from "@/lib/image-dimensions.json";
 
-const dimensionManifest = dimensions as Record<string, { width: number; height: number }>;
-
-// Mirrors the path-fixing the page components already apply to scraped body
-// HTML, so every source (page bodies, header, footer, popup) resolves to a
-// valid absolute local path before it reaches next/image.
 function normalizeSrc(src: string): string {
   let s = src
     .replace(/^(?:\.\.\/)+wp-content\//, "/wp-content/")
@@ -24,68 +18,47 @@ function normalizeSrc(src: string): string {
   return s;
 }
 
-// React does not execute <script> elements created via JSX/createElement —
-// unlike a raw HTML string, which the browser's own parser executes normally.
-// The immediate parent of any <script> (payment buttons, embeds) is rendered
-// as opaque dangerouslySetInnerHTML instead, exactly as it behaves today, so
-// third-party widgets keep working. This check is deliberately shallow (direct
-// children only): replace() still recurses normally into every other node, so
-// unrelated siblings/ancestors — including any <img> sharing the same section
-// — keep converting to next/image as usual.
-function hasDirectScriptChild(node: Element): boolean {
-  return (node.children || []).some(
-    (child) => child instanceof Element && child.name === "script"
+function hasDirectScriptChild(element: Element): boolean {
+  return element.children.some(
+    (child) => child.type === "script" || (child instanceof Element && child.name === "script")
   );
 }
 
-// Renders scraped Elementor/WordPress HTML as real React elements instead of
-// dangerouslySetInnerHTML, so every <img> becomes a genuine next/image
-// component (responsive srcset, lazy loading, AVIF/WebP) — everything else
-// (classes, structure, forms, widgets) passes through unchanged.
-export default function RichHtml({ html }: { html: string }) {
+// Decorative logo badges, icons, flags, watermarks, avatars should NEVER be designated as LCP hero image
+function isDecorativeOrLogoImage(src: string, alt: string, width?: number, height?: number): boolean {
+  const lowerSrc = src.toLowerCase();
+  const lowerAlt = alt.toLowerCase();
+
+  if (
+    lowerSrc.includes('atlas-mentor-circle') ||
+    lowerSrc.includes('logo') ||
+    lowerSrc.includes('badge') ||
+    lowerSrc.includes('avatar') ||
+    lowerSrc.includes('flag') ||
+    lowerSrc.includes('icon') ||
+    lowerSrc.includes('watermark') ||
+    lowerAlt.includes('logo') ||
+    lowerAlt.includes('badge') ||
+    lowerAlt.includes('icon')
+  ) {
+    return true;
+  }
+
+  if (width && height && (width < 150 || height < 150)) {
+    return true;
+  }
+
+  return false;
+}
+
+interface RichHtmlProps {
+  html: string;
+  allowPriority?: boolean;
+}
+
+export default function RichHtml({ html, allowPriority = true }: RichHtmlProps) {
   let imgIndex = 0;
-
-  React.useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const toggler = target.closest(".ekit-accordion--toggler") || target.closest(".elementskit-card-header");
-      if (!toggler) return;
-
-      e.preventDefault();
-      const card = toggler.closest(".elementskit-card");
-      if (!card) return;
-
-      const accordion = card.closest(".elementskit-accordion");
-      const isActive = card.classList.contains("active");
-
-      if (accordion) {
-        accordion.querySelectorAll(".elementskit-card").forEach((c) => {
-          c.classList.remove("active");
-          const panel = c.querySelector(".collapse");
-          if (panel) panel.classList.remove("show");
-          const link = c.querySelector(".ekit-accordion--toggler");
-          if (link) {
-            link.classList.add("collapsed");
-            link.setAttribute("aria-expanded", "false");
-          }
-        });
-      }
-
-      if (!isActive) {
-        card.classList.add("active");
-        const panel = card.querySelector(".collapse");
-        if (panel) panel.classList.add("show");
-        const link = card.querySelector(".ekit-accordion--toggler");
-        if (link) {
-          link.classList.remove("collapsed");
-          link.setAttribute("aria-expanded", "true");
-        }
-      }
-    };
-
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
+  let heroPriorityAssigned = false;
 
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -95,13 +68,6 @@ export default function RichHtml({ html }: { html: string }) {
         const props = attributesToProps(domNode.attribs, domNode.name);
         return React.createElement(domNode.name, {
           ...props,
-          // The embedded <script> (e.g. Razorpay's payment-button.js) executes
-          // as part of the browser's normal parse of the server-rendered HTML
-          // and/or is re-executed by ElementorInteractions on client
-          // navigation — either way it rewrites this element's contents (e.g.
-          // swapping the <script> for a rendered button/iframe) before React
-          // hydrates. That divergence from the SSR markup is expected and
-          // intentionally third-party-owned, not a real mismatch to warn about.
           suppressHydrationWarning: true,
           dangerouslySetInnerHTML: { __html: serializeDom(domNode.children) },
         });
@@ -111,19 +77,19 @@ export default function RichHtml({ html }: { html: string }) {
 
       const attribs = domNode.attribs || {};
       const src = normalizeSrc(attribs.src || "");
-      let width = attribs.width ? parseInt(attribs.width, 10) : undefined;
-      let height = attribs.height ? parseInt(attribs.height, 10) : undefined;
+      const width = attribs.width ? parseInt(attribs.width, 10) : undefined;
+      const height = attribs.height ? parseInt(attribs.height, 10) : undefined;
 
-      if ((!width || !height) && dimensionManifest[src]) {
-        width = width || dimensionManifest[src].width;
-        height = height || dimensionManifest[src].height;
-      }
-
-      // No reliable intrinsic size available — leave it as a plain <img>
-      // rather than risk a layout-breaking Image with the wrong dimensions.
       if (!src || !width || !height) return undefined;
 
-      const isFirst = imgIndex === 0;
+      const isDecorative = isDecorativeOrLogoImage(src, attribs.alt || "", width, height);
+
+      let isHero = false;
+      if (allowPriority && !heroPriorityAssigned && !isDecorative) {
+        isHero = true;
+        heroPriorityAssigned = true;
+      }
+
       imgIndex++;
 
       return (
@@ -134,8 +100,9 @@ export default function RichHtml({ html }: { html: string }) {
           alt={attribs.alt || ""}
           className={attribs.class || undefined}
           title={attribs.title || undefined}
-          priority={isFirst}
-          loading={isFirst ? undefined : "lazy"}
+          priority={isHero}
+          loading={isHero ? undefined : "lazy"}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
         />
       );
     },

@@ -1,8 +1,39 @@
 import type { Metadata } from "next";
+import dimensions from '@/lib/image-dimensions.json';
 
 export const SITE_URL = "https://atlasmentor.com";
 export const SITE_NAME = "Atlas Mentor";
 export const DEFAULT_OG_IMAGE = "/wp-content/uploads/2024/07/MBBS-Dream-With-Atlas-Mentor.jpg";
+
+const dimensionManifest = dimensions as Record<string, { width: number; height: number }>;
+
+export function injectImageDimensions(html: string): string {
+  if (!html || !html.includes('<img')) return html;
+
+  return html.replace(/<img[^>]+>/gi, (imgTag) => {
+    const srcMatch = imgTag.match(/src=["']([^"']+)["']/i);
+    if (!srcMatch) return imgTag;
+
+    const rawSrc = srcMatch[1]
+      .replace(/^(?:\.\.\/)+wp-content\//, "/wp-content/")
+      .replace(/^(?:\.\.\/)+wp-includes\//, "/wp-includes/")
+      .replace(/^https:\/\/atlasmentor\.com\/wp-content\//, "/wp-content/")
+      .replace(/^https:\/\/atlasmentor\.com\/wp-includes\//, "/wp-includes/");
+
+    const src = rawSrc.startsWith('/') || rawSrc.startsWith('http') || rawSrc.startsWith('data:') ? rawSrc : '/' + rawSrc;
+    const dim = dimensionManifest[src];
+    if (!dim) return imgTag;
+
+    let newTag = imgTag;
+    if (!/width=["']?\d+/i.test(imgTag)) {
+      newTag = newTag.replace(/>$/, ` width="${dim.width}">`);
+    }
+    if (!/height=["']?\d+/i.test(imgTag)) {
+      newTag = newTag.replace(/>$/, ` height="${dim.height}">`);
+    }
+    return newTag;
+  });
+}
 
 interface ScrapedPageData {
   title?: string;

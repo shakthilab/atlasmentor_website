@@ -6,12 +6,14 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
+import dynamic from 'next/dynamic';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Popup from "@/components/Popup";
 import BodyClassManager from "@/components/BodyClassManager";
 import ClarityAnalytics from "@/components/ClarityAnalytics";
 import FormHandlerClient from "@/components/FormHandlerClient";
+
+const Popup = dynamic(() => import("@/components/Popup"));
 import ElementorInteractions from "@/components/ElementorInteractions";
 import HeroTransition from "@/components/HeroTransition";
 import { organizationSchema, localBusinessSchema, personSchema, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -121,6 +123,8 @@ export default function RootLayout({
             GLOBAL_STYLES in app/page.tsx, app/[slug]/page.tsx, etc. for the per-page
             de-dupe filter) into one content-hashed, immutably-cached request.
             Regenerate with scripts/combine_global_css.py if that list ever changes. */}
+        <link rel="preload" href="/wp-content/uploads/elementor/google-fonts/fonts/montserrat-v29-latin-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/wp-content/uploads/elementor/google-fonts/fonts/roboto-v32-latin-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="stylesheet" href={getCombinedGlobalCssHref()} precedence="default" />
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <Script
