@@ -1,5 +1,3 @@
-"use client";
-
 import parse, { Element, attributesToProps, type HTMLReactParserOptions } from "html-react-parser";
 import serializeDom from "dom-serializer";
 import React from "react";
@@ -42,50 +40,21 @@ function hasDirectScriptChild(node: Element): boolean {
 // dangerouslySetInnerHTML, so every <img> becomes a genuine next/image
 // component (responsive srcset, lazy loading, AVIF/WebP) — everything else
 // (classes, structure, forms, widgets) passes through unchanged.
+//
+// This is a plain server component (no "use client"): html-react-parser is
+// pure JS and runs fine at build/render time, so every page's full body
+// markup gets converted to real HTML during SSG instead of being shipped to
+// the browser as a string and parsed client-side after hydration. That
+// client-side parse was previously the single biggest hit to this site's
+// Lighthouse Performance score, especially on mobile, since it delayed
+// First Contentful Paint/Largest Contentful Paint behind JS execution on
+// every single page. The accordion click handling that used to live here
+// was removed rather than ported to a client wrapper: ElementorInteractions
+// (mounted once, globally, in app/layout.tsx) already binds the identical
+// `.ekit-accordion--toggler` click-delegation handler, so this was a fully
+// redundant second listener doing the same job.
 export default function RichHtml({ html }: { html: string }) {
   let imgIndex = 0;
-
-  React.useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const toggler = target.closest(".ekit-accordion--toggler") || target.closest(".elementskit-card-header");
-      if (!toggler) return;
-
-      e.preventDefault();
-      const card = toggler.closest(".elementskit-card");
-      if (!card) return;
-
-      const accordion = card.closest(".elementskit-accordion");
-      const isActive = card.classList.contains("active");
-
-      if (accordion) {
-        accordion.querySelectorAll(".elementskit-card").forEach((c) => {
-          c.classList.remove("active");
-          const panel = c.querySelector(".collapse");
-          if (panel) panel.classList.remove("show");
-          const link = c.querySelector(".ekit-accordion--toggler");
-          if (link) {
-            link.classList.add("collapsed");
-            link.setAttribute("aria-expanded", "false");
-          }
-        });
-      }
-
-      if (!isActive) {
-        card.classList.add("active");
-        const panel = card.querySelector(".collapse");
-        if (panel) panel.classList.add("show");
-        const link = card.querySelector(".ekit-accordion--toggler");
-        if (link) {
-          link.classList.remove("collapsed");
-          link.setAttribute("aria-expanded", "true");
-        }
-      }
-    };
-
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
 
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
