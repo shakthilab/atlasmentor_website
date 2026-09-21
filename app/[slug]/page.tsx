@@ -13,6 +13,9 @@ import {
   extractAccordionFAQs,
   faqPageSchema,
   breadcrumbSchema,
+  articleSchema,
+  CONTENT_REVIEWER,
+  CONTENT_LAST_REVIEWED,
   type BreadcrumbItem,
 } from '@/lib/seo';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -130,6 +133,8 @@ export default async function Page({ params }: PageProps) {
 
   const canonical = data.canonical || `${SITE_URL}/${slug}/`;
   const university = parseUniversityTitle(data.title || '');
+  const studyMatch = slug.match(/^study-mbbs-in-(.+)-for-indian-students$/);
+  const studyCountry = studyMatch ? COUNTRY_NAMES[studyMatch[1]] : undefined;
 
   const breadcrumbItems: BreadcrumbItem[] = (() => {
     const home: BreadcrumbItem = { name: 'Home', url: `${SITE_URL}/` };
@@ -172,6 +177,9 @@ export default async function Page({ params }: PageProps) {
     ? courseSchema({ universityName: university.name, country: university.country, url: canonical })
     : null;
   const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
+  const guideArticleSchema = studyCountry
+    ? articleSchema({ headline: data.title || `MBBS in ${studyCountry}`, url: canonical })
+    : null;
 
   return (
     <main className="single-post">
@@ -196,6 +204,9 @@ export default async function Page({ params }: PageProps) {
       {mbbsCourseSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: mbbsCourseSchema }} />
       )}
+      {guideArticleSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: guideArticleSchema }} />
+      )}
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
       )}
@@ -204,6 +215,18 @@ export default async function Page({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: breadcrumbSchema(breadcrumbItems) }}
         />
+      )}
+
+      {/* Visible byline + freshness date: the human-readable counterpart to
+          guideArticleSchema above. Keeping the two in sync (same reviewer,
+          same date) is what makes the schema trustworthy rather than an
+          invisible claim search engines and AI systems can't verify. */}
+      {studyCountry && (
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "16px 20px 0", fontSize: 14, color: "#555" }}>
+          Reviewed by{" "}
+          <a href={CONTENT_REVIEWER.bioUrl}>{CONTENT_REVIEWER.name}</a>, {CONTENT_REVIEWER.jobTitle}
+          {" · "}Last updated {CONTENT_LAST_REVIEWED}
+        </div>
       )}
 
       {/* Page Content */}

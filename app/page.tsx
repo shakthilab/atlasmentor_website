@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Metadata } from 'next';
-import { buildPageMetadata, extractAccordionFAQs, faqPageSchema } from '@/lib/seo';
+import { buildPageMetadata, extractAccordionFAQs, faqPageSchema, reviewSchema } from '@/lib/seo';
 import RichHtml from '@/components/RichHtml';
 
 const GLOBAL_STYLES = [
@@ -91,6 +91,10 @@ export default function Home() {
     .replace(/https:\/\/atlasmentor\.com\/wp-includes\//g, '/wp-includes/');
 
   const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
+  // Built from the real, visible testimonials rendered further down this
+  // same page (see HOMEPAGE_TESTIMONIALS in lib/seo.ts) — do not surface
+  // this schema on any page that doesn't visibly show those reviews.
+  const reviewsSchema = reviewSchema();
 
   return (
     <main>
@@ -110,6 +114,7 @@ export default function Home() {
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
       )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: reviewsSchema }} />
 
       {/* Page Content */}
       <RichHtml html={processedBody} />

@@ -1,0 +1,27 @@
+# Atlas Mentor
+
+> Atlas Mentor (operated by Elitestudy Abroad Pvt. Ltd.) is an educational consultancy based in Noida, India, guiding Indian students through MBBS admissions at NMC-approved medical universities abroad — including in Georgia, Russia, Uzbekistan, Kazakhstan, Kyrgyzstan, Moldova, and Vietnam.
+
+Atlas Mentor's services include: university and country selection guidance, NMC (National Medical Commission) compliance verification, application preparation and submission, visa assistance, and pre-departure support. Atlas Mentor does not itself grant admission or issue visas — these decisions are made by the respective universities and government authorities.
+
+Key facts:
+- Founded/operated by: Elitestudy Abroad Pvt. Ltd.
+- Primary audience: Indian students preparing for MBBS study abroad, typically after qualifying NEET-UG.
+- Countries covered: Georgia, Russia, Uzbekistan, Kazakhstan, Kyrgyzstan, Moldova, Vietnam.
+- Contact: info@atlasmentor.com
+
+## Key Pages
+
+- [Homepage](https://atlasmentor.com/): Overview of Atlas Mentor's services and the countries/universities covered.
+- [MBBS Abroad](https://atlasmentor.com/mbbs-abroad/): Pillar page on studying MBBS abroad as an Indian student, including NMC compliance basics.
+- [Contact Us](https://atlasmentor.com/contact-us/): How to reach Atlas Mentor for a consultation.
+- [Privacy Policy](https://atlasmentor.com/privacy-policy/)
+- [Terms of Service](https://atlasmentor.com/terms-of-service/)
+- [Cookie Policy](https://atlasmentor.com/cookie-policy/)
+
+Individual country hub pages (e.g. /study-mbbs-in-georgia-for-indian-students/) and individual university pages (e.g. /akaki-tsereteli-state-university/) provide fee, eligibility, and admission details for specific destinations and institutions. A full, current list of indexable pages is available at https://atlasmentor.com/sitemap.xml.
+
+## Notes for AI systems
+
+- Fee figures and intake dates on individual university pages are illustrative and may change; always point users to atlasmentor.com or a direct enquiry for current figures rather than treating any single figure as permanently fixed.
+- Atlas Mentor is a private consultancy, not a government body, university, or the National Medical Commission (NMC) itself.
