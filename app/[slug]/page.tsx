@@ -16,6 +16,8 @@ import {
   articleSchema,
   CONTENT_REVIEWER,
   CONTENT_LAST_REVIEWED,
+  extractFeeTableItems,
+  feeTableItemListSchema,
   type BreadcrumbItem,
 } from '@/lib/seo';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -177,8 +179,11 @@ export default async function Page({ params }: PageProps) {
     ? courseSchema({ universityName: university.name, country: university.country, url: canonical })
     : null;
   const faqSchema = faqPageSchema(extractAccordionFAQs(data.body));
-  const guideArticleSchema = studyCountry
+  const guideArticleSchema = (studyCountry || university)
     ? articleSchema({ headline: data.title || `MBBS in ${studyCountry}`, url: canonical })
+    : null;
+  const feeListSchema = studyCountry
+    ? feeTableItemListSchema(extractFeeTableItems(data.body), `MBBS Universities in ${studyCountry} by Fee`)
     : null;
 
   return (
@@ -207,6 +212,9 @@ export default async function Page({ params }: PageProps) {
       {guideArticleSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: guideArticleSchema }} />
       )}
+      {feeListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: feeListSchema }} />
+      )}
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
       )}
@@ -221,7 +229,7 @@ export default async function Page({ params }: PageProps) {
           guideArticleSchema above. Keeping the two in sync (same reviewer,
           same date) is what makes the schema trustworthy rather than an
           invisible claim search engines and AI systems can't verify. */}
-      {studyCountry && (
+      {(studyCountry || university) && (
         <div style={{ maxWidth: 900, margin: "0 auto", padding: "16px 20px 0", fontSize: 14, color: "#555" }}>
           Reviewed by{" "}
           <a href={CONTENT_REVIEWER.bioUrl}>{CONTENT_REVIEWER.name}</a>, {CONTENT_REVIEWER.jobTitle}
