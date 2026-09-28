@@ -3,6 +3,7 @@ import serializeDom from "dom-serializer";
 import React from "react";
 import Image from "next/image";
 import dimensions from "@/lib/image-dimensions.json";
+import YouTubeFacade from "@/components/YouTubeFacade";
 
 const dimensionManifest = dimensions as Record<string, { width: number; height: number }>;
 
@@ -59,6 +60,22 @@ export default function RichHtml({ html }: { html: string }) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (!(domNode instanceof Element)) return undefined;
+
+      // YouTube embeds become click-to-load facades (see YouTubeFacade) so the
+      // player's JavaScript is not fetched until a visitor actually plays one.
+      if (domNode.name === "iframe") {
+        const ytMatch = (domNode.attribs?.src || "").match(
+          /^https:\/\/(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{6,})/
+        );
+        if (ytMatch) {
+          return (
+            <YouTubeFacade
+              videoId={ytMatch[1]}
+              title={domNode.attribs?.title || "YouTube video"}
+            />
+          );
+        }
+      }
 
       if (domNode.name !== "img" && hasDirectScriptChild(domNode)) {
         const props = attributesToProps(domNode.attribs, domNode.name);
