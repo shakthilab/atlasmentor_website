@@ -147,6 +147,43 @@ export function extractAccordionFAQs(body: string): { question: string; answer: 
   return faqs;
 }
 
+// Pulls the university/fee rows out of the fee-comparison tables added to
+// each country guide page, so ItemList schema always matches the table a
+// visitor actually sees rather than being maintained as separate data.
+export function extractFeeTableItems(
+  body: string
+): { name: string; url: string; fee: string }[] {
+  const tableMatch = body.match(/<h2>MBBS Fees in[\s\S]*?<tbody>([\s\S]*?)<\/tbody>/);
+  if (!tableMatch) return [];
+
+  const rowRegex = /<tr><td[^>]*><a href="([^"]+)">([^<]+)<\/a><\/td><td[^>]*>[^<]*<\/td><td[^>]*>([^<]+)<\/td><\/tr>/g;
+  const items: { name: string; url: string; fee: string }[] = [];
+  let m;
+  while ((m = rowRegex.exec(tableMatch[1])) !== null) {
+    items.push({ url: `${SITE_URL}${m[1]}`, name: stripTags(m[2]), fee: stripTags(m[3]) });
+  }
+  return items;
+}
+
+export function feeTableItemListSchema(
+  items: { name: string; url: string; fee: string }[],
+  listName: string
+): string | null {
+  if (items.length === 0) return null;
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: listName,
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: it.url,
+      name: it.fee && it.fee !== "Contact for current fees" ? `${it.name} - ${it.fee}` : it.name,
+    })),
+  });
+}
+
 export function faqPageSchema(faqs: { question: string; answer: string }[]): string | null {
   if (faqs.length === 0) return null;
 
@@ -170,30 +207,34 @@ export function organizationSchema(): string {
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/wp-content/uploads/2024/07/Atlas-Mentor-Pvt-Ltd.png`,
     description:
-      "Atlas Mentor guides Indian students through their MBBS study-abroad journey — university selection, admissions, visa assistance, and pre-departure support.",
+      "Atlas Mentor guides international students, with particular depth in Indian NEET/NMC requirements, through their MBBS study-abroad journey — university selection, admissions, visa assistance, and pre-departure support.",
     email: "info@atlasmentor.com",
     // Three lines are genuinely in active use (WhatsApp, office landline, and
     // an admissions-specific number) — each gets its own ContactPoint instead
-    // of picking one and silently dropping the others.
+    // of picking one and silently dropping the others. areaServed is
+    // "Worldwide" rather than "IN": these numbers (WhatsApp especially) are
+    // genuinely reachable by international students, and the business now
+    // serves students beyond India. Do not narrow this back to a single
+    // country without a real reason (e.g. a dedicated regional number).
     contactPoint: [
       {
         "@type": "ContactPoint",
         telephone: "+91-7859033144",
         contactType: "customer service",
-        areaServed: "IN",
+        areaServed: "Worldwide",
         email: "info@atlasmentor.com",
       },
       {
         "@type": "ContactPoint",
         telephone: "+91-8226888163",
         contactType: "customer service",
-        areaServed: "IN",
+        areaServed: "Worldwide",
       },
       {
         "@type": "ContactPoint",
         telephone: "+91-9220582597",
         contactType: "sales",
-        areaServed: "IN",
+        areaServed: "Worldwide",
       },
     ],
     sameAs: [
@@ -210,7 +251,7 @@ export function localBusinessSchema(): string {
     name: SITE_NAME,
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/wp-content/uploads/2024/07/Atlas-Mentor-Pvt-Ltd.png`,
-    description: "Premier educational consultancy guiding Indian medical aspirants for MBBS abroad admissions in top NMC approved universities.",
+    description: "Educational consultancy based in Noida, India, guiding international medical aspirants through MBBS abroad admissions at NMC-approved universities, with particular depth in requirements for Indian students (NEET, NMC gazette compliance).",
     telephone: "+91-7859033144",
     email: "info@atlasmentor.com",
     address: {
